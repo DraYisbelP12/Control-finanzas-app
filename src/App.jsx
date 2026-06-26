@@ -2,7 +2,11 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
+import Layout from './components/Layout'
+import Movimientos from './pages/Movimientos'
+import Cuentas from './pages/Cuentas'
+import Deudas from './pages/Deudas'
+import Resumen from './pages/Resumen'
 
 export default function App() {
   const [session, setSession] = useState(undefined)
@@ -15,10 +19,24 @@ export default function App() {
 
   if (session === undefined) return null
 
+  if (!session) {
+    return (
+      <Routes>
+        <Route path="*" element={<Login />} />
+      </Routes>
+    )
+  }
+
   return (
-    <Routes>
-      <Route path="/login" element={!session ? <Login /> : <Navigate to="/" replace />} />
-      <Route path="/*" element={session ? <Dashboard /> : <Navigate to="/login" replace />} />
-    </Routes>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Navigate to="/movimientos" replace />} />
+        <Route path="/movimientos" element={<Movimientos />} />
+        <Route path="/cuentas" element={<Cuentas />} />
+        <Route path="/deudas" element={<Deudas />} />
+        <Route path="/resumen" element={<Resumen />} />
+        <Route path="*" element={<Navigate to="/movimientos" replace />} />
+      </Routes>
+    </Layout>
   )
 }
