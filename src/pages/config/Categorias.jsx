@@ -6,6 +6,7 @@ export default function Categorias() {
   const [nombre, setNombre] = useState('')
   const [tipo, setTipo] = useState('gasto')
   const [saving, setSaving] = useState(false)
+  const [deleteError, setDeleteError] = useState(null)
 
   async function fetchCats() {
     const { data } = await supabase.from('categorias').select('*').order('tipo').order('nombre')
@@ -18,7 +19,7 @@ export default function Categorias() {
     e.preventDefault()
     if (!nombre.trim()) return
     setSaving(true)
-    await supabase.from('categorias').insert({ nombre: nombre.trim(), tipo })
+    await supabase.from('categorias').insert({ nombre: nombre.trim(), tipo, activo: true })
     setNombre('')
     await fetchCats()
     setSaving(false)
@@ -31,8 +32,13 @@ export default function Categorias() {
 
   async function handleDelete(id) {
     if (!confirm('¿Eliminar esta categoría?')) return
-    await supabase.from('categorias').delete().eq('id', id)
-    await fetchCats()
+    setDeleteError(null)
+    const { error } = await supabase.from('categorias').delete().eq('id', id)
+    if (error) {
+      setDeleteError('No se puede eliminar: esta categoría tiene movimientos asociados. Desactívala en su lugar.')
+    } else {
+      await fetchCats()
+    }
   }
 
   const ingresos = categorias.filter(c => c.tipo === 'ingreso')
@@ -45,6 +51,16 @@ export default function Categorias() {
       </div>
 
       <div style={{ padding: 'var(--space-4)' }}>
+        {deleteError && (
+          <div role="alert" style={{
+            background: 'var(--color-danger-light)', color: 'var(--color-danger)',
+            borderRadius: 'var(--radius-md)',
+            padding: 'var(--space-3) var(--space-4)',
+            fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)', lineHeight: 1.5,
+          }}>
+            {deleteError}
+          </div>
+        )}
         {/* Formulario nueva categoría */}
         <form onSubmit={handleAdd} style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: 'var(--space-6)', flexWrap: 'wrap' }}>
           <input
