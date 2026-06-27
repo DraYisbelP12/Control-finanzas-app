@@ -112,7 +112,7 @@
   color: var(--color-text-inverse);
   padding: var(--space-4) var(--space-5);
   position: sticky;
-  top: 0;
+  top: var(--topbar-h);
   z-index: 10;
 }
 .ds-page-header h1 {
@@ -126,7 +126,13 @@
   color: var(--color-text-muted);
   padding: var(--space-12) var(--space-4);
 }
-.ds-empty-icon { font-size: 2.5rem; margin-bottom: var(--space-3); }
+.ds-empty-icon {
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-border-strong);
+}
 .ds-empty p   { font-size: var(--text-sm); margin-top: var(--space-1); }
 
 /* ── Section label (uppercase) ────────────────────────────── */

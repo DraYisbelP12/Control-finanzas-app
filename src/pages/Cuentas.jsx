@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { usePerfil } from '../hooks/usePerfil'
+import { IconBank, IconCash, IconCreditCard, IconX } from '../components/icons/NavIcons'
 
 const PRODUCTOS = [
   'Efectivo',
@@ -10,12 +11,10 @@ const PRODUCTOS = [
   'Tarjeta de débito',
 ]
 
-const PRODUCTO_ICONS = {
-  'Efectivo':          '💵',
-  'Cuenta corriente':  '🏦',
-  'Cuenta de ahorro':  '🏦',
-  'Tarjeta de crédito': '💳',
-  'Tarjeta de débito': '💳',
+function ProductoIcon({ producto, size = 20 }) {
+  if (producto === 'Efectivo') return <IconCash size={size} />
+  if (producto === 'Tarjeta de crédito' || producto === 'Tarjeta de débito') return <IconCreditCard size={size} />
+  return <IconBank size={size} />
 }
 
 const emptyForm = { banco: '', producto: 'Cuenta corriente' }
@@ -110,7 +109,7 @@ export default function Cuentas() {
 
         {!loading && cuentas.length === 0 && (
           <div className="ds-empty">
-            <div className="ds-empty-icon">🏦</div>
+            <div className="ds-empty-icon"><IconBank size={40} /></div>
             <p style={{ fontWeight: 500 }}>No hay cuentas registradas.</p>
             {isAdmin && <p>Toca + para agregar la primera.</p>}
           </div>
@@ -184,10 +183,11 @@ function CuentaCard({ c, isAdmin, onEdit, onToggle, onDelete }) {
         <div style={{
           width: 40, height: 40, borderRadius: 'var(--radius-md)',
           background: 'var(--color-primary-light)',
+          color: 'var(--color-primary)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.25rem', flexShrink: 0,
+          flexShrink: 0,
         }}>
-          {PRODUCTO_ICONS[c.producto] || '🏦'}
+          <ProductoIcon producto={c.producto} size={20} />
         </div>
         <div>
           <p style={{ fontWeight: 600, fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>{c.banco}</p>
@@ -201,7 +201,9 @@ function CuentaCard({ c, isAdmin, onEdit, onToggle, onDelete }) {
           <button onClick={() => onToggle(c)} className="ds-btn ds-btn-ghost ds-btn-sm">
             {c.activo ? 'Desactivar' : 'Activar'}
           </button>
-          <button onClick={() => onDelete(c)} className="ds-btn ds-btn-danger ds-btn-sm" aria-label={`Eliminar ${c.banco}`}>✕</button>
+          <button onClick={() => onDelete(c)} className="ds-btn ds-btn-danger ds-btn-sm" aria-label={`Eliminar ${c.banco}`}>
+            <IconX size={14} />
+          </button>
         </div>
       )}
     </div>

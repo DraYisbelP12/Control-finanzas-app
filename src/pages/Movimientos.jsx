@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { usePerfil } from '../hooks/usePerfil'
 import MovimientoForm from '../components/MovimientoForm'
+import { IconWallet, IconRepeat } from '../components/icons/NavIcons'
 
 export default function Movimientos() {
   const perfil = usePerfil()
@@ -66,7 +67,7 @@ export default function Movimientos() {
 
         {!loading && movimientos.length === 0 && (
           <div className="ds-empty">
-            <div className="ds-empty-icon">💸</div>
+            <div className="ds-empty-icon"><IconWallet size={40} /></div>
             <p style={{ fontWeight: 500 }}>No hay movimientos registrados.</p>
             <p>Toca + para agregar el primero.</p>
           </div>
@@ -133,10 +134,12 @@ function MovimientoCard({ m, isAdmin, onEdit, onDelete }) {
         <p style={{ fontWeight: 600, fontSize: 'var(--text-sm)', marginBottom: '2px', color: 'var(--color-text-primary)' }}>
           {m.concepto || m.categorias?.nombre || '—'}
         </p>
-        <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
-          {m.categorias?.nombre}
-          {m.subcategoria ? ` · ${m.subcategoria}` : ''}
-          {m.recurrente ? ' · 🔁' : ''}
+        <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <span>
+            {m.categorias?.nombre}
+            {m.subcategoria ? ` · ${m.subcategoria}` : ''}
+          </span>
+          {m.recurrente && <IconRepeat size={11} aria-label="Recurrente" />}
         </p>
       </div>
       <div style={{ textAlign: 'right', marginLeft: 'var(--space-3)', flexShrink: 0 }}>

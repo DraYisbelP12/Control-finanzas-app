@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { usePerfil } from '../hooks/usePerfil'
+import { IconList } from '../components/icons/NavIcons'
 
 const emptyDeuda = { nombre: '', moneda: 'DOP', saldo_actual: '', limite_o_monto_original: '', tasa_interes: '' }
 const emptyAbono = { monto: '', moneda: 'DOP', fecha: new Date().toISOString().split('T')[0], cuenta_origen_id: '' }
@@ -152,7 +153,7 @@ export default function Deudas() {
 
         {!loading && deudas.length === 0 && (
           <div className="ds-empty">
-            <div className="ds-empty-icon">📋</div>
+            <div className="ds-empty-icon"><IconList size={40} /></div>
             <p style={{ fontWeight: 500 }}>No hay deudas activas.</p>
             {isAdmin && <p>Toca + para registrar una.</p>}
           </div>
