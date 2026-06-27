@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { IconChart, IconCalendar } from '../components/icons/NavIcons'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 function fmt(n, moneda) {
   return Number(n).toLocaleString('es-DO', { minimumFractionDigits: 2 }) + ' ' + moneda
@@ -320,9 +321,30 @@ export default function Resumen() {
               const totalIng = filas.reduce((s, d) => s + (d.ingresos[mon] || 0), 0)
               const totalGas = filas.reduce((s, d) => s + (d.gastos[mon] || 0), 0)
               const totalBal = totalIng - totalGas
+              const barData = datosPorMes.map(d => ({
+                mes: mesCorto(d.mes),
+                Ingresos: d.ingresos[mon] || 0,
+                Gastos: d.gastos[mon] || 0,
+              }))
               return (
                 <div key={mon} className="ds-card" style={{ padding: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
                   <p className="ds-section-label">Resumen anual {year} · {mon}</p>
+                  {/* Bar chart */}
+                  <div style={{ marginBottom: 'var(--space-4)', marginTop: 'var(--space-2)' }}>
+                    <ResponsiveContainer width="100%" height={160}>
+                      <BarChart data={barData} margin={{ top: 0, right: 4, left: -24, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                        <XAxis dataKey="mes" tick={{ fontSize: 9, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+                        <YAxis tickFormatter={fmtShort} tick={{ fontSize: 9, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+                        <Tooltip
+                          formatter={(v, name) => [fmtShort(v) + ' ' + mon, name]}
+                          contentStyle={{ fontSize: '11px', borderRadius: '10px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-text-primary)' }}
+                        />
+                        <Bar dataKey="Ingresos" fill="var(--color-success)" radius={[4, 4, 0, 0]} maxBarSize={20} />
+                        <Bar dataKey="Gastos"   fill="var(--color-danger)"  radius={[4, 4, 0, 0]} maxBarSize={20} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
                   <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--text-xs)' }}>
                       <thead>

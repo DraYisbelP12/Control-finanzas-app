@@ -49,7 +49,7 @@ export default function Login() {
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100dvh',
-      background: 'linear-gradient(160deg, #1d4ed8 0%, #2563eb 60%, #3b7af5 100%)',
+      background: 'linear-gradient(160deg, #3D7A59 0%, #4E8C69 55%, #6FAE8A 100%)',
     }}>
       {/* Brand section */}
       <div style={{
@@ -63,14 +63,14 @@ export default function Login() {
         <div style={{
           width: 72, height: 72,
           borderRadius: '22px',
-          background: 'rgba(255,255,255,0.15)',
-          border: '1.5px solid rgba(255,255,255,0.3)',
+          background: 'rgba(255,255,255,0.18)',
+          border: '1.5px solid rgba(255,255,255,0.30)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           color: '#fff',
           marginBottom: 'var(--space-5)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.2)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.2)',
         }}>
           <IconWallet size={36} />
         </div>
@@ -86,7 +86,7 @@ export default function Login() {
         </h1>
         <p style={{
           fontSize: 'var(--text-sm)',
-          color: 'rgba(255,255,255,0.62)',
+          color: 'rgba(255,255,255,0.65)',
           fontWeight: 400,
           letterSpacing: '0.01em',
         }}>
@@ -100,7 +100,7 @@ export default function Login() {
         background: 'var(--color-surface)',
         borderRadius: '28px 28px 0 0',
         padding: 'var(--space-8) var(--space-6) var(--space-10)',
-        boxShadow: '0 -8px 40px rgba(0,0,0,0.14)',
+        boxShadow: '0 -8px 40px rgba(0,0,0,0.10)',
         minHeight: '56vh',
       }}>
         <h2 style={{
@@ -117,7 +117,6 @@ export default function Login() {
           <div role="alert" style={{
             background: 'var(--color-danger-light)',
             color: 'var(--color-danger)',
-            border: '1px solid #fecaca',
             borderRadius: 'var(--radius-md)',
             padding: 'var(--space-3) var(--space-4)',
             fontSize: 'var(--text-sm)',
@@ -131,7 +130,6 @@ export default function Login() {
           <div role="status" style={{
             background: 'var(--color-success-light)',
             color: 'var(--color-success)',
-            border: '1px solid #bbf7d0',
             borderRadius: 'var(--radius-md)',
             padding: 'var(--space-3) var(--space-4)',
             fontSize: 'var(--text-sm)',
@@ -144,7 +142,7 @@ export default function Login() {
 
         <form onSubmit={mode === 'login' ? handleLogin : handleRecovery}>
           <div className="ds-field">
-            <label htmlFor="email" className="ds-label">Correo electronico</label>
+            <label htmlFor="email" className="ds-label">Correo electrónico</label>
             <input
               id="email"
               type="email"
@@ -159,7 +157,7 @@ export default function Login() {
 
           {mode === 'login' && (
             <div className="ds-field">
-              <label htmlFor="password" className="ds-label">Contrasena</label>
+              <label htmlFor="password" className="ds-label">Contraseña</label>
               <div style={{ position: 'relative' }}>
                 <input
                   id="password"
@@ -175,10 +173,10 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPwd(v => !v)}
-                  aria-label={showPwd ? 'Ocultar contrasena' : 'Mostrar contrasena'}
+                  aria-label={showPwd ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                   style={{
                     position: 'absolute', right: '0', top: '0',
-                    width: '44px', height: '44px',
+                    width: '44px', height: '100%',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: 'none', border: 'none', cursor: 'pointer',
                     color: 'var(--color-text-muted)',
@@ -194,20 +192,13 @@ export default function Login() {
             type="submit"
             disabled={loading}
             className="ds-btn ds-btn-primary"
-            style={{
-              width: '100%',
-              marginTop: 'var(--space-2)',
-              marginBottom: 'var(--space-5)',
-              minHeight: '48px',
-              fontSize: 'var(--text-base)',
-              borderRadius: 'var(--radius-lg)',
-            }}
+            style={{ width: '100%', marginTop: 'var(--space-2)', marginBottom: 'var(--space-5)' }}
           >
             {loading
               ? 'Procesando...'
               : mode === 'login'
                 ? 'Entrar'
-                : 'Enviar correo de recuperacion'}
+                : 'Enviar correo de recuperación'}
           </button>
         </form>
 
@@ -217,12 +208,12 @@ export default function Login() {
             onClick={() => { setMode('recovery'); setError(null) }}
             style={{
               background: 'none', border: 'none',
-              color: 'var(--color-primary)', cursor: 'pointer',
+              color: 'var(--color-primary-hover)', cursor: 'pointer',
               fontSize: 'var(--text-sm)', fontWeight: 500,
               display: 'block', margin: '0 auto', padding: 'var(--space-2)',
             }}
           >
-            Olvide mi contrasena
+            Olvidé mi contraseña
           </button>
         ) : (
           <button
@@ -235,7 +226,7 @@ export default function Login() {
               display: 'block', margin: '0 auto', padding: 'var(--space-2)',
             }}
           >
-            Volver al inicio de sesion
+            Volver al inicio de sesión
           </button>
         )}
       </div>

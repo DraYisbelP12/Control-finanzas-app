@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import Login from './pages/Login'
 import Layout from './components/Layout'
+import Dashboard from './pages/Dashboard'
 import Movimientos from './pages/Movimientos'
 import Cuentas from './pages/Cuentas'
 import Deudas from './pages/Deudas'
@@ -31,13 +32,14 @@ export default function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Navigate to="/movimientos" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/movimientos" element={<Movimientos />} />
         <Route path="/cuentas" element={<Cuentas />} />
         <Route path="/deudas" element={<Deudas />} />
         <Route path="/resumen" element={<Resumen />} />
         <Route path="/config/categorias" element={<ConfigCategorias />} />
-        <Route path="*" element={<Navigate to="/movimientos" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Layout>
   )

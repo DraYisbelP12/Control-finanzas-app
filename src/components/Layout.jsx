@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { usePerfil } from '../hooks/usePerfil'
+import { useDarkMode } from '../hooks/useDarkMode'
 import SideMenu from './SideMenu'
-import { IconMoney, IconBank, IconList, IconChart, IconMenu } from './icons/NavIcons'
+import { IconHome, IconMoney, IconBank, IconList, IconChart, IconMenu } from './icons/NavIcons'
 
 const tabs = [
-  { to: '/movimientos', label: 'Movimientos', Icon: IconMoney },
-  { to: '/cuentas',     label: 'Cuentas',     Icon: IconBank  },
-  { to: '/deudas',      label: 'Deudas',      Icon: IconList  },
-  { to: '/resumen',     label: 'Resumen',     Icon: IconChart },
+  { to: '/dashboard',   label: 'Inicio',       Icon: IconHome  },
+  { to: '/movimientos', label: 'Movimientos',   Icon: IconMoney },
+  { to: '/cuentas',     label: 'Cuentas',       Icon: IconBank  },
+  { to: '/deudas',      label: 'Deudas',        Icon: IconList  },
+  { to: '/resumen',     label: 'Resumen',       Icon: IconChart },
 ]
 
 export default function Layout({ children }) {
   const perfil = usePerfil()
+  const { dark, toggle: toggleDark } = useDarkMode()
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -21,10 +24,10 @@ export default function Layout({ children }) {
       <header role="banner" style={{
         position: 'fixed', top: 0, left: 0, right: 0,
         height: 'var(--topbar-h)',
-        background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
+        background: 'var(--gradient-primary)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 var(--space-5)', zIndex: 100,
-        boxShadow: '0 1px 0 rgba(255,255,255,0.08), 0 2px 10px rgba(0,0,0,0.14)',
+        boxShadow: '0 1px 0 rgba(255,255,255,0.08), 0 2px 10px rgba(0,0,0,0.10)',
       }}>
         <span style={{
           color: '#fff', fontWeight: 800,
@@ -34,11 +37,11 @@ export default function Layout({ children }) {
         </span>
         <button
           onClick={() => setMenuOpen(true)}
-          aria-label="Abrir menu"
+          aria-label="Abrir menú"
           aria-expanded={menuOpen}
           aria-controls="side-menu"
           style={{
-            background: 'rgba(255,255,255,0.14)',
+            background: 'rgba(255,255,255,0.15)',
             border: '1px solid rgba(255,255,255,0.22)',
             color: '#fff',
             borderRadius: 'var(--radius-md)',
@@ -63,7 +66,7 @@ export default function Layout({ children }) {
       {/* Bottom nav */}
       <nav
         role="navigation"
-        aria-label="Navegacion principal"
+        aria-label="Navegación principal"
         style={{
           position: 'fixed', bottom: 0, left: 0, right: 0,
           height: 'var(--bottomnav-h)',
@@ -71,6 +74,7 @@ export default function Layout({ children }) {
           borderTop: '1px solid var(--color-border)',
           display: 'flex', alignItems: 'stretch',
           zIndex: 100,
+          transition: 'background var(--transition), border-color var(--transition)',
         }}
       >
         {tabs.map(({ to, label, Icon }) => (
@@ -90,19 +94,19 @@ export default function Layout({ children }) {
             {({ isActive }) => (
               <>
                 <span style={{
-                  width: '52px', height: '28px',
+                  width: '44px', height: '26px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   borderRadius: 'var(--radius-full)',
                   background: isActive ? 'var(--color-primary-light)' : 'transparent',
-                  color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                  color: isActive ? 'var(--color-primary-hover)' : 'var(--color-text-muted)',
                   transition: 'background var(--transition), color var(--transition)',
                 }}>
-                  <Icon size={20} />
+                  <Icon size={18} />
                 </span>
                 <span style={{
-                  fontSize: '10px',
-                  fontWeight: isActive ? 600 : 400,
-                  color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                  fontSize: '9px',
+                  fontWeight: isActive ? 700 : 400,
+                  color: isActive ? 'var(--color-primary-hover)' : 'var(--color-text-muted)',
                   letterSpacing: '0.01em',
                   transition: 'color var(--transition)',
                 }}>
@@ -118,6 +122,8 @@ export default function Layout({ children }) {
         <SideMenu
           id="side-menu"
           perfil={perfil}
+          dark={dark}
+          onToggleDark={toggleDark}
           onClose={() => setMenuOpen(false)}
         />
       )}
