@@ -1073,9 +1073,123 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════ 5. DEUDAS ═══════════════════ -->
+<!-- ═══════════════════ 5. RESUMEN ═══════════════════ -->
 <div class="section">
   <span class="section-number">Módulo 5</span>
+  <h2>Resumen financiero</h2>
+  <p class="desc">Analiza tus finanzas mes a mes y anualmente. Muestra ingresos y gastos desglosados por categoría, comparativa con el mes anterior y gráfico de barras anual.</p>
+
+  <div class="two-col">
+    <div>
+      <p style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">Vistas disponibles</p>
+      <table>
+        <thead><tr><th>Vista</th><th>Qué muestra</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Este mes</strong></td>
+            <td>Balance del mes seleccionado. Gastos e ingresos por categoría con barras de porcentaje. Indicadores de comparación con el mes anterior (↑ subió / ↓ bajó).</td>
+          </tr>
+          <tr>
+            <td><strong>Vista anual</strong></td>
+            <td>Gráfico de barras con todos los meses del año. Tabla con ingresos, gastos y balance por mes. El mes actual aparece resaltado.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:13px;font-weight:700;color:var(--text);margin:16px 0 8px;">Cómo navegar entre meses</p>
+      <ol class="steps">
+        <li><span class="step-num">‹</span><p>Toca la flecha izquierda para ir al <strong>mes anterior</strong></p></li>
+        <li><span class="step-num">›</span><p>Toca la flecha derecha para ir al <strong>mes siguiente</strong> (desactivada si es el mes actual)</p></li>
+      </ol>
+
+      <div class="callout">
+        <strong>Mayor gasto del mes:</strong> La tarjeta roja al tope de los gastos resalta automáticamente la categoría donde más gastaste ese mes.
+      </div>
+      <div class="callout" style="margin-top:8px;">
+        <strong>Comparativa mes anterior:</strong> Debajo del balance aparecen chips verdes/rojos indicando si los ingresos, gastos y balance subieron o bajaron respecto al mes previo.
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <span class="phone-label">Resumen — vista mensual</span>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><span style="width:16px;height:8px;border-radius:2px;"></span></div></div>
+          <!-- Header with nav and tabs -->
+          <div style="background:linear-gradient(135deg,#3D7A58,#6FAE8A);padding:8px 12px 10px;">
+            <h4 style="font-size:12px;font-weight:800;color:#fff;margin-bottom:6px;">Resumen</h4>
+            <!-- Month nav -->
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+              <div style="width:28px;height:22px;background:rgba(255,255,255,0.2);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">‹</div>
+              <span style="flex:1;text-align:center;font-size:9px;font-weight:500;color:#fff;text-transform:capitalize;">junio 2026</span>
+              <div style="width:28px;height:22px;background:rgba(255,255,255,0.1);border-radius:5px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px;">›</div>
+            </div>
+            <!-- Tabs -->
+            <div style="display:flex;gap:4px;">
+              <div style="flex:1;background:#fff;border-radius:5px;height:20px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#4E8C6A;">Este mes</div>
+              <div style="flex:1;background:rgba(255,255,255,0.2);border-radius:5px;height:20px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:rgba(255,255,255,0.80);">Vista anual</div>
+            </div>
+          </div>
+          <!-- Content -->
+          <div style="padding:8px;overflow:hidden;height:calc(100% - 56px);">
+            <!-- Balance card -->
+            <div class="mini-card" style="margin-bottom:6px;">
+              <p class="mini-label" style="margin-bottom:4px;">Balance DOP</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:5px;">
+                <div style="text-align:center;"><p style="font-size:7px;color:#718096;">Ingresos</p><p style="font-size:9px;font-weight:700;color:#4E8C6A;">115K</p></div>
+                <div style="text-align:center;"><p style="font-size:7px;color:#718096;">Gastos</p><p style="font-size:9px;font-weight:700;color:#D96B6B;">69.8K</p></div>
+                <div style="text-align:center;"><p style="font-size:7px;color:#718096;">Balance</p><p style="font-size:9px;font-weight:700;color:#4E8C6A;">45.2K</p></div>
+              </div>
+              <!-- Diff chips -->
+              <div style="display:flex;gap:3px;border-top:1px solid #e2e8f0;padding-top:4px;">
+                <div style="flex:1;background:#e8f5ee;border-radius:4px;padding:2px;text-align:center;"><p style="font-size:6.5px;color:#718096;">Ingresos</p><p style="font-size:7.5px;font-weight:700;color:#4E8C6A;">↑ 12%</p></div>
+                <div style="flex:1;background:#fdeaea;border-radius:4px;padding:2px;text-align:center;"><p style="font-size:6.5px;color:#718096;">Gastos</p><p style="font-size:7.5px;font-weight:700;color:#D96B6B;">↑ 8%</p></div>
+                <div style="flex:1;background:#e8f5ee;border-radius:4px;padding:2px;text-align:center;"><p style="font-size:6.5px;color:#718096;">Balance</p><p style="font-size:7.5px;font-weight:700;color:#4E8C6A;">↑ 22%</p></div>
+              </div>
+            </div>
+            <!-- Mayor gasto -->
+            <div style="background:#fdeaea;border:1px solid #fecaca;border-radius:8px;padding:6px 8px;margin-bottom:6px;">
+              <p style="font-size:7px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Mayor gasto del mes</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:9px;font-weight:700;color:#1e2d3d;">Alimentación</span>
+                <span style="font-size:9px;font-weight:700;color:#D96B6B;">32,400 DOP</span>
+              </div>
+            </div>
+            <!-- Gastos por categoría -->
+            <div class="mini-card">
+              <p class="mini-label" style="margin-bottom:4px;">Gastos por categoría</p>
+              <div style="margin-bottom:4px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#4a5568;">Alimentación</span><span style="font-size:8px;font-weight:600;color:#D96B6B;">32,400</span></div>
+                <div style="display:flex;align-items:center;gap:4px;"><div class="mini-progress-track" style="flex:1;"><div class="mini-progress-fill danger" style="width:100%;"></div></div><span style="font-size:7px;color:#718096;min-width:20px;">47%</span></div>
+              </div>
+              <div style="margin-bottom:4px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#4a5568;">Servicios</span><span style="font-size:8px;font-weight:600;color:#D96B6B;">18,200</span></div>
+                <div style="display:flex;align-items:center;gap:4px;"><div class="mini-progress-track" style="flex:1;"><div class="mini-progress-fill danger" style="width:56%;"></div></div><span style="font-size:7px;color:#718096;min-width:20px;">26%</span></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:2px;"><span style="font-size:8px;color:#4a5568;">Transporte</span><span style="font-size:8px;font-weight:600;color:#D96B6B;">8,500</span></div>
+                <div style="display:flex;align-items:center;gap:4px;"><div class="mini-progress-track" style="flex:1;"><div class="mini-progress-fill danger" style="width:26%;"></div></div><span style="font-size:7px;color:#718096;min-width:20px;">12%</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Inicio</span></div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="1.75"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span>Movimientos</span></div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg><span>Deudas</span></div>
+            <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="#4E8C6A" stroke-width="1.75"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Resumen</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════ 6. DEUDAS ═══════════════════ -->
+<div class="section">
+  <span class="section-number">Módulo 6</span>
   <h2>Deudas</h2>
   <p class="desc">Gestiona todas las deudas activas y registra abonos. Cada abono se registra automáticamente como un gasto en Movimientos.</p>
 
@@ -1158,9 +1272,9 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════ 6. METAS ═══════════════════ -->
+<!-- ═══════════════════ 7. METAS ═══════════════════ -->
 <div class="section">
-  <span class="section-number">Módulo 6</span>
+  <span class="section-number">Módulo 7</span>
   <h2>Metas de ahorro</h2>
   <p class="desc">Define objetivos de ahorro y sigue el progreso. Cada abono también genera un movimiento de gasto automáticamente.</p>
 
@@ -1237,9 +1351,9 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════ CUENTAS ═══════════════════ -->
+<!-- ═══════════════════ 8. CUENTAS ═══════════════════ -->
 <div class="section">
-  <span class="section-number">Módulo 7</span>
+  <span class="section-number">Módulo 8</span>
   <h2>Cuentas bancarias y efectivo</h2>
   <p class="desc">Registra todas las cuentas, tarjetas y efectivo que usas. Al registrar un movimiento puedes indicar con cuál cuenta se realizó, para un control más preciso.</p>
 
@@ -1455,9 +1569,121 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════ 8. PRESUPUESTO ═══════════════════ -->
+<!-- ═══════════════════ 9. CATEGORÍAS ═══════════════════ -->
 <div class="section">
-  <span class="section-number">Módulo 8</span>
+  <span class="section-number">Módulo 9</span>
+  <h2>Categorías</h2>
+  <p class="desc">Clasifica los movimientos por rubro. Existen dos tipos: Ingresos y Gastos. Solo la administradora puede crear, activar, desactivar o eliminar categorías.</p>
+
+  <div class="two-col">
+    <div>
+      <p style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">Crear una categoría <span style="font-size:11px;color:var(--text-3);font-weight:400;">(solo administradora)</span></p>
+      <ol class="steps">
+        <li><span class="step-num">1</span><p>Abre el <strong>menú lateral ☰</strong> → Categorías</p></li>
+        <li><span class="step-num">2</span><p>Escribe el <strong>nombre</strong> de la categoría (ej: "Alimentación")</p></li>
+        <li><span class="step-num">3</span><p>Selecciona el <strong>tipo</strong>: Gasto o Ingreso</p></li>
+        <li><span class="step-num">4</span><p>Toca <strong>+ Agregar</strong></p></li>
+      </ol>
+      <p style="font-size:13px;font-weight:700;color:var(--text);margin:16px 0 8px;">Desactivar vs. eliminar</p>
+      <table>
+        <thead><tr><th>Acción</th><th>Qué pasa</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Desactivar</strong></td>
+            <td>La categoría deja de aparecer en los formularios nuevos, pero los movimientos históricos <strong>no se pierden</strong>. Se puede reactivar después.</td>
+          </tr>
+          <tr>
+            <td><strong>Eliminar</strong></td>
+            <td>Si la categoría tiene movimientos asociados, la app la <strong>desactiva automáticamente</strong> en lugar de eliminarla, y muestra un aviso. Solo se puede eliminar si no tiene movimientos.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout" style="margin-top:12px;">
+        <strong>💡 Recomendación:</strong> Desactiva en lugar de eliminar. Así preservas el historial y puedes reactivar si la necesitas en el futuro.
+      </div>
+      <div class="callout warn" style="margin-top:8px;">
+        <strong>⚠️ ¿No ves una categoría al registrar?</strong> Probablemente está desactivada. La administradora puede reactivarla desde este módulo.
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <span class="phone-label">Pantalla de Categorías</span>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><span style="width:16px;height:8px;border-radius:2px;"></span></div></div>
+          <div class="app-topbar"><h4>Categorías</h4></div>
+          <!-- Quick add form -->
+          <div style="padding:8px;border-bottom:1px solid #e2e8f0;background:#f7f9fc;display:flex;gap:5px;">
+            <div class="mini-input" style="flex:1;margin-bottom:0;">Nombre de categoría</div>
+            <div style="background:#f7f9fc;border:1px solid #e2e8f0;border-radius:6px;height:28px;width:52px;display:flex;align-items:center;justify-content:center;font-size:7.5px;color:#4a5568;font-weight:600;">Gasto ▾</div>
+            <div style="background:linear-gradient(135deg,#3D7A58,#6FAE8A);border-radius:6px;height:28px;padding:0 6px;display:flex;align-items:center;font-size:8px;color:#fff;font-weight:700;white-space:nowrap;">+ Agregar</div>
+          </div>
+          <!-- Content -->
+          <div style="padding:8px;overflow:hidden;height:calc(100% - 56px);">
+            <!-- GASTOS section -->
+            <p style="font-size:7.5px;font-weight:700;color:#D96B6B;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Gastos</p>
+            <!-- Active categories -->
+            <div class="mini-card" style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;margin-bottom:4px;">
+              <span style="font-size:9px;font-weight:500;color:#1e2d3d;">Alimentación</span>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Desactivar</div>
+                <div style="font-size:8px;background:#fdeaea;border-radius:4px;padding:2px 5px;color:#D96B6B;font-weight:700;">✕</div>
+              </div>
+            </div>
+            <div class="mini-card" style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;margin-bottom:4px;">
+              <span style="font-size:9px;font-weight:500;color:#1e2d3d;">Transporte</span>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Desactivar</div>
+                <div style="font-size:8px;background:#fdeaea;border-radius:4px;padding:2px 5px;color:#D96B6B;font-weight:700;">✕</div>
+              </div>
+            </div>
+            <!-- Inactive (faded) -->
+            <div class="mini-card" style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;margin-bottom:4px;opacity:0.45;">
+              <div>
+                <span style="font-size:9px;font-weight:500;color:#1e2d3d;">Entretenimiento</span>
+                <span style="font-size:8px;color:#718096;font-style:italic;margin-left:4px;">inactiva</span>
+              </div>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4E8C6A;font-weight:600;">Activar</div>
+                <div style="font-size:8px;background:#fdeaea;border-radius:4px;padding:2px 5px;color:#D96B6B;font-weight:700;">✕</div>
+              </div>
+            </div>
+            <div class="mini-card" style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;margin-bottom:8px;">
+              <span style="font-size:9px;font-weight:500;color:#1e2d3d;">Servicios</span>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Desactivar</div>
+                <div style="font-size:8px;background:#fdeaea;border-radius:4px;padding:2px 5px;color:#D96B6B;font-weight:700;">✕</div>
+              </div>
+            </div>
+            <!-- INGRESOS section -->
+            <p style="font-size:7.5px;font-weight:700;color:#4E8C6A;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Ingresos</p>
+            <div class="mini-card" style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;margin-bottom:4px;">
+              <span style="font-size:9px;font-weight:500;color:#1e2d3d;">Salario</span>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Desactivar</div>
+                <div style="font-size:8px;background:#fdeaea;border-radius:4px;padding:2px 5px;color:#D96B6B;font-weight:700;">✕</div>
+              </div>
+            </div>
+            <div class="mini-card" style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;">
+              <span style="font-size:9px;font-weight:500;color:#1e2d3d;">Freelance</span>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Desactivar</div>
+                <div style="font-size:8px;background:#fdeaea;border-radius:4px;padding:2px 5px;color:#D96B6B;font-weight:700;">✕</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════ 10. PRESUPUESTO ═══════════════════ -->
+<div class="section">
+  <span class="section-number">Módulo 10</span>
   <h2>Presupuesto mensual</h2>
   <p class="desc">Define límites de gasto por categoría y monitorea cuánto llevas consumido. La administradora activa/desactiva el módulo.</p>
 
@@ -1524,11 +1750,11 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════ 8. MENÚ LATERAL ═══════════════════ -->
+<!-- ═══════════════════ 11. MENÚ LATERAL Y MODO OSCURO ═══════════════════ -->
 <div class="section">
-  <span class="section-number">Módulo 9</span>
-  <h2>Menú lateral y configuración</h2>
-  <p class="desc">Toca el ícono ☰ en la barra superior para acceder a opciones adicionales, configuración y cerrar sesión.</p>
+  <span class="section-number">Módulo 11</span>
+  <h2>Menú lateral, modo oscuro y sesión</h2>
+  <p class="desc">Toca el ícono ☰ en la barra superior para acceder a módulos adicionales, cambiar la apariencia o cerrar sesión.</p>
 
   <div class="two-col">
     <div>
@@ -1600,6 +1826,117 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Modo oscuro section -->
+  <div style="margin-top:36px;">
+    <p style="font-size:16px;font-weight:800;color:var(--text);margin-bottom:6px;">🌙 Modo oscuro y modo claro</p>
+    <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Cambia la apariencia de la app desde el menú lateral. La preferencia se guarda en tu dispositivo y no afecta a otras usuarias.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;">
+
+      <!-- How to toggle -->
+      <div>
+        <p style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">Cómo activarlo</p>
+        <ol class="steps">
+          <li><span class="step-num">1</span><p>Toca el ícono <strong>☰</strong> en la esquina superior derecha</p></li>
+          <li><span class="step-num">2</span><p>Toca <strong>"Modo oscuro"</strong> para cambiar a tema oscuro</p></li>
+          <li><span class="step-num">3</span><p>Toca <strong>"Modo claro"</strong> para volver a la apariencia normal</p></li>
+        </ol>
+        <div class="callout" style="margin-top:12px;">La preferencia queda guardada. Si cierras y vuelves a abrir la app, mantiene el modo que elegiste.</div>
+
+        <!-- Comparison table -->
+        <p style="font-size:13px;font-weight:700;color:var(--text);margin:18px 0 10px;">Comparación</p>
+        <table>
+          <thead><tr><th>Aspecto</th><th>Modo claro</th><th>Modo oscuro</th></tr></thead>
+          <tbody>
+            <tr><td>Fondo</td><td>Blanco / gris claro</td><td>Gris oscuro / negro</td></tr>
+            <tr><td>Texto</td><td>Oscuro sobre claro</td><td>Claro sobre oscuro</td></tr>
+            <tr><td>Uso nocturno</td><td>Puede forzar la vista</td><td>Más cómodo</td></tr>
+            <tr><td>Batería</td><td>Normal</td><td>Ahorra en pantallas OLED</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Side-by-side phones -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <!-- LIGHT MODE phone -->
+        <div class="phone-wrap">
+          <span class="phone-label">Modo claro</span>
+          <div class="phone" style="width:122px;">
+            <div class="phone-notch" style="width:50px;height:16px;top:10px;"></div>
+            <div class="phone-screen" style="height:250px;background:#f7f9fc;border-radius:28px;">
+              <div style="background:linear-gradient(135deg,#3D7A58,#6FAE8A);padding:6px 10px 8px;">
+                <p style="font-size:7px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.05em;">INICIO</p>
+                <h4 style="font-size:9px;font-weight:800;color:#fff;">Buenas tardes</h4>
+              </div>
+              <div style="padding:6px;">
+                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:7px;margin-bottom:5px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                  <p style="font-size:6.5px;color:#718096;text-transform:uppercase;font-weight:700;margin-bottom:3px;">Balance DOP</p>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                    <div style="background:#e8f5ee;border-radius:4px;padding:3px;"><p style="font-size:6.5px;color:#718096;">Ingresos</p><p style="font-size:8px;font-weight:800;color:#4E8C6A;">115K</p></div>
+                    <div style="background:#fdeaea;border-radius:4px;padding:3px;"><p style="font-size:6.5px;color:#718096;">Gastos</p><p style="font-size:8px;font-weight:800;color:#D96B6B;">69.8K</p></div>
+                  </div>
+                </div>
+                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:5px 7px;margin-bottom:4px;">
+                  <p style="font-size:6.5px;font-weight:700;color:#1e2d3d;">Tarjeta BHD</p>
+                  <p style="font-size:6px;color:#718096;">12,500 DOP pendiente</p>
+                </div>
+                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:5px 7px;">
+                  <p style="font-size:6.5px;font-weight:700;color:#1e2d3d;">Fondo emergencia</p>
+                  <div style="background:#e2e8f0;border-radius:4px;height:3px;margin-top:4px;overflow:hidden;"><div style="background:#6FAE8A;height:100%;width:62%;border-radius:4px;"></div></div>
+                </div>
+              </div>
+              <!-- bottom nav light -->
+              <div style="position:absolute;bottom:0;left:0;right:0;height:32px;background:#fff;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-around;border-radius:0 0 28px 28px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4E8C6A" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DARK MODE phone -->
+        <div class="phone-wrap">
+          <span class="phone-label">Modo oscuro</span>
+          <div class="phone" style="width:122px;">
+            <div class="phone-notch" style="width:50px;height:16px;top:10px;"></div>
+            <div class="phone-screen" style="height:250px;background:#111827;border-radius:28px;">
+              <div style="background:linear-gradient(135deg,#2a5a3e,#3D7A58);padding:6px 10px 8px;">
+                <p style="font-size:7px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">INICIO</p>
+                <h4 style="font-size:9px;font-weight:800;color:#fff;">Buenas tardes</h4>
+              </div>
+              <div style="padding:6px;">
+                <div style="background:#1f2937;border:1px solid #374151;border-radius:8px;padding:7px;margin-bottom:5px;">
+                  <p style="font-size:6.5px;color:#6b7280;text-transform:uppercase;font-weight:700;margin-bottom:3px;">Balance DOP</p>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                    <div style="background:#1a3a28;border-radius:4px;padding:3px;"><p style="font-size:6.5px;color:#6b7280;">Ingresos</p><p style="font-size:8px;font-weight:800;color:#6FAE8A;">115K</p></div>
+                    <div style="background:#3a1a1a;border-radius:4px;padding:3px;"><p style="font-size:6.5px;color:#6b7280;">Gastos</p><p style="font-size:8px;font-weight:800;color:#f87171;">69.8K</p></div>
+                  </div>
+                </div>
+                <div style="background:#1f2937;border:1px solid #374151;border-radius:8px;padding:5px 7px;margin-bottom:4px;">
+                  <p style="font-size:6.5px;font-weight:700;color:#f3f4f6;">Tarjeta BHD</p>
+                  <p style="font-size:6px;color:#6b7280;">12,500 DOP pendiente</p>
+                </div>
+                <div style="background:#1f2937;border:1px solid #374151;border-radius:8px;padding:5px 7px;">
+                  <p style="font-size:6.5px;font-weight:700;color:#f3f4f6;">Fondo emergencia</p>
+                  <div style="background:#374151;border-radius:4px;height:3px;margin-top:4px;overflow:hidden;"><div style="background:#6FAE8A;height:100%;width:62%;border-radius:4px;"></div></div>
+                </div>
+              </div>
+              <!-- bottom nav dark -->
+              <div style="position:absolute;bottom:0;left:0;right:0;height:32px;background:#1f2937;border-top:1px solid #374151;display:flex;align-items:center;justify-content:space-around;border-radius:0 0 28px 28px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6FAE8A" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
