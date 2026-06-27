@@ -1237,9 +1237,227 @@
 
 <hr class="divider">
 
-<!-- ═══════════════════ 7. PRESUPUESTO ═══════════════════ -->
+<!-- ═══════════════════ CUENTAS ═══════════════════ -->
 <div class="section">
   <span class="section-number">Módulo 7</span>
+  <h2>Cuentas bancarias y efectivo</h2>
+  <p class="desc">Registra todas las cuentas, tarjetas y efectivo que usas. Al registrar un movimiento puedes indicar con cuál cuenta se realizó, para un control más preciso.</p>
+
+  <div class="two-col reverse">
+
+    <div class="phone-wrap">
+      <span class="phone-label">Lista de cuentas</span>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><span style="width:16px;height:8px;border-radius:2px;"></span></div></div>
+          <div class="app-topbar" style="justify-content:space-between;align-items:center;">
+            <h4>Cuentas</h4>
+            <span style="font-size:8px;color:rgba(255,255,255,0.7);">5 registradas</span>
+          </div>
+          <div class="screen-body" style="height:calc(100% - 56px);padding:8px;">
+            <p class="mini-label" style="margin-bottom:5px;">Activas</p>
+
+            <!-- Efectivo -->
+            <div class="mini-card" style="display:flex;align-items:center;gap:8px;padding:7px 8px;margin-bottom:5px;">
+              <div style="width:32px;height:32px;border-radius:8px;background:#e8f5ee;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4E8C6A" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>
+              </div>
+              <div style="flex:1;">
+                <p style="font-size:9.5px;font-weight:700;color:#1e2d3d;">Efectivo</p>
+                <p style="font-size:7.5px;color:#718096;">Efectivo</p>
+              </div>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7.5px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Editar</div>
+              </div>
+            </div>
+
+            <!-- BanReservas -->
+            <div class="mini-card" style="display:flex;align-items:center;gap:8px;padding:7px 8px;margin-bottom:5px;">
+              <div style="width:32px;height:32px;border-radius:8px;background:#e8f5ee;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4E8C6A" stroke-width="2"><rect x="3" y="10" width="18" height="10" rx="1"/><polyline points="3 10 12 3 21 10"/><line x1="12" y1="10" x2="12" y2="20"/></svg>
+              </div>
+              <div style="flex:1;">
+                <p style="font-size:9.5px;font-weight:700;color:#1e2d3d;">BanReservas</p>
+                <p style="font-size:7.5px;color:#718096;">Cuenta corriente</p>
+              </div>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7.5px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Editar</div>
+              </div>
+            </div>
+
+            <!-- BHD Ahorro -->
+            <div class="mini-card" style="display:flex;align-items:center;gap:8px;padding:7px 8px;margin-bottom:5px;">
+              <div style="width:32px;height:32px;border-radius:8px;background:#e8f5ee;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4E8C6A" stroke-width="2"><rect x="3" y="10" width="18" height="10" rx="1"/><polyline points="3 10 12 3 21 10"/><line x1="12" y1="10" x2="12" y2="20"/></svg>
+              </div>
+              <div style="flex:1;">
+                <p style="font-size:9.5px;font-weight:700;color:#1e2d3d;">BHD León</p>
+                <p style="font-size:7.5px;color:#718096;">Cuenta de ahorro</p>
+              </div>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7.5px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Editar</div>
+              </div>
+            </div>
+
+            <!-- Tarjeta crédito -->
+            <div class="mini-card" style="display:flex;align-items:center;gap:8px;padding:7px 8px;margin-bottom:5px;">
+              <div style="width:32px;height:32px;border-radius:8px;background:#e8f5ee;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4E8C6A" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              </div>
+              <div style="flex:1;">
+                <p style="font-size:9.5px;font-weight:700;color:#1e2d3d;">Banco Popular</p>
+                <p style="font-size:7.5px;color:#718096;">Tarjeta de crédito</p>
+              </div>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7.5px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Editar</div>
+              </div>
+            </div>
+
+            <!-- Tarjeta débito -->
+            <div class="mini-card" style="display:flex;align-items:center;gap:8px;padding:7px 8px;">
+              <div style="width:32px;height:32px;border-radius:8px;background:#e8f5ee;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4E8C6A" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              </div>
+              <div style="flex:1;">
+                <p style="font-size:9.5px;font-weight:700;color:#1e2d3d;">Scotiabank</p>
+                <p style="font-size:7.5px;color:#718096;">Tarjeta de débito</p>
+              </div>
+              <div style="display:flex;gap:3px;">
+                <div style="font-size:7.5px;border:1px solid #e2e8f0;border-radius:4px;padding:2px 5px;color:#4a5568;">Editar</div>
+              </div>
+            </div>
+          </div>
+          <div class="fab" style="bottom:10px;">+</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;">Tipos de cuenta disponibles</p>
+      <table>
+        <thead><tr><th>Tipo</th><th>Cuándo usarlo</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>💵 Efectivo</strong></td>
+            <td>Dinero en mano — compras sin tarjeta ni transferencia</td>
+          </tr>
+          <tr>
+            <td><strong>🏦 Cuenta corriente</strong></td>
+            <td>Cuenta bancaria principal para cobros y pagos del día a día</td>
+          </tr>
+          <tr>
+            <td><strong>🏦 Cuenta de ahorro</strong></td>
+            <td>Cuenta bancaria donde guardas dinero a largo plazo</td>
+          </tr>
+          <tr>
+            <td><strong>💳 Tarjeta de crédito</strong></td>
+            <td>Tarjeta que genera deuda — pagas al final del mes</td>
+          </tr>
+          <tr>
+            <td><strong>💳 Tarjeta de débito</strong></td>
+            <td>Tarjeta vinculada a tu cuenta — descuenta saldo inmediato</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:13px;font-weight:700;color:var(--text);margin:16px 0 10px;">Crear una cuenta nueva <span style="font-size:11px;color:var(--text-3);font-weight:400;">(solo administradora)</span></p>
+      <ol class="steps">
+        <li><span class="step-num">1</span><p>Abre el <strong>menú lateral ☰</strong> → Cuentas</p></li>
+        <li><span class="step-num">2</span><p>Toca el botón verde <strong>+</strong></p></li>
+        <li><span class="step-num">3</span><p>Escribe el nombre del <strong>banco o institución</strong> (ej: "BanReservas", "Efectivo")</p></li>
+        <li><span class="step-num">4</span><p>Selecciona el <strong>tipo de producto</strong> de la lista</p></li>
+        <li><span class="step-num">5</span><p>Toca <strong>Agregar cuenta</strong></p></li>
+      </ol>
+
+      <div class="callout" style="margin-top:4px;">
+        <strong>¿Cómo uso la cuenta al registrar un movimiento?</strong><br>
+        Al crear un ingreso o gasto, hay un campo opcional <strong>"Cuenta"</strong> donde seleccionas con qué medio se hizo: efectivo, tarjeta de crédito, transferencia bancaria, etc. Esto te permite saber exactamente de dónde salió o llegó el dinero.
+      </div>
+      <div class="callout warn" style="margin-top:8px;">
+        <strong>Desactivar vs. eliminar:</strong> Si una cuenta ya tiene movimientos registrados, desactívala en lugar de eliminarla. Los movimientos históricos quedan intactos y la cuenta deja de aparecer en los formularios nuevos.
+      </div>
+    </div>
+  </div>
+
+  <!-- Second row: form mockup + usage example -->
+  <div style="margin-top:28px;">
+    <p style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:16px;">¿Cómo se ve al registrar un movimiento con cuenta?</p>
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:32px;align-items:start;">
+
+      <div class="phone-wrap">
+        <span class="phone-label">Formulario — nueva cuenta</span>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" style="position:relative;">
+            <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><span style="width:16px;height:8px;border-radius:2px;"></span></div></div>
+            <div class="app-topbar"><h4>Cuentas</h4></div>
+            <div style="background:#f7f9fc;height:40px;opacity:0.3;"></div>
+            <div class="sheet-overlay" style="bottom:0;top:auto;position:absolute;height:75%;background:none;">
+              <div class="sheet" style="border-top:1px solid #e2e8f0;">
+                <div class="sheet-handle"></div>
+                <h5>Nueva cuenta</h5>
+                <div class="mini-input-label">Banco / Institución</div>
+                <div class="mini-input focused">Banco Popular</div>
+                <div class="mini-input-label">Producto</div>
+                <div class="mini-input" style="border-color:#6FAE8A;color:#1e2d3d;font-weight:600;">
+                  Tarjeta de crédito ▾
+                </div>
+                <div style="background:#f7f9fc;border-radius:6px;padding:5px 7px;margin:6px 0;font-size:7.5px;color:#718096;">
+                  Opciones: Efectivo · Cta. corriente · Cta. ahorro · Tarjeta crédito · Tarjeta débito
+                </div>
+                <div class="sheet-btns">
+                  <div class="sheet-btn ghost">Cancelar</div>
+                  <div class="sheet-btn primary">Agregar cuenta</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:13px;color:var(--text-2);margin-bottom:14px;">
+          Al registrar cualquier ingreso o gasto en <strong>Movimientos</strong>, aparece el campo <em>Cuenta</em> donde puedes indicar con qué medio de pago se realizó:
+        </p>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+          <p style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:10px;">Ejemplo de uso práctico</p>
+          <div class="mini-row" style="border:none;padding:6px 0;border-bottom:1px solid var(--border);">
+            <div class="mini-dot out">−</div>
+            <div class="mini-text">
+              <p style="font-size:12px;">Supermercado Nacional</p>
+              <span style="font-size:11px;">Gasto · Alimentación · <strong style="color:#4E8C6A;">Tarjeta de crédito Banco Popular</strong></span>
+            </div>
+            <span class="mini-sum red" style="font-size:12px;">4,500 DOP</span>
+          </div>
+          <div class="mini-row" style="border:none;padding:6px 0;border-bottom:1px solid var(--border);">
+            <div class="mini-dot in">+</div>
+            <div class="mini-text">
+              <p style="font-size:12px;">Salario junio</p>
+              <span style="font-size:11px;">Ingreso · Sueldos · <strong style="color:#4E8C6A;">Cuenta corriente BanReservas</strong></span>
+            </div>
+            <span class="mini-sum green" style="font-size:12px;">60,000 DOP</span>
+          </div>
+          <div class="mini-row" style="border:none;padding:6px 0;">
+            <div class="mini-dot out">−</div>
+            <div class="mini-text">
+              <p style="font-size:12px;">Café colmado</p>
+              <span style="font-size:11px;">Gasto · Alimentación · <strong style="color:#4E8C6A;">Efectivo</strong></span>
+            </div>
+            <span class="mini-sum red" style="font-size:12px;">150 DOP</span>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:var(--text-3);">El campo de cuenta es <em>opcional</em>, pero registrarlo te permite saber exactamente de dónde sale o entra el dinero en cada transacción.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ═══════════════════ 8. PRESUPUESTO ═══════════════════ -->
+<div class="section">
+  <span class="section-number">Módulo 8</span>
   <h2>Presupuesto mensual</h2>
   <p class="desc">Define límites de gasto por categoría y monitorea cuánto llevas consumido. La administradora activa/desactiva el módulo.</p>
 
@@ -1308,7 +1526,7 @@
 
 <!-- ═══════════════════ 8. MENÚ LATERAL ═══════════════════ -->
 <div class="section">
-  <span class="section-number">Módulo 8</span>
+  <span class="section-number">Módulo 9</span>
   <h2>Menú lateral y configuración</h2>
   <p class="desc">Toca el ícono ☰ en la barra superior para acceder a opciones adicionales, configuración y cerrar sesión.</p>
 
