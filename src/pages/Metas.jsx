@@ -322,6 +322,7 @@ function AbonoSheet({ meta, perfil, onClose, onSave }) {
     setError(null)
     const valor = parseFloat(monto)
     if (!valor || valor <= 0) { setError('Ingresa un monto válido.'); return }
+    if (!categoriaId) { setError('Selecciona una categoría para el gasto.'); return }
     setLoading(true)
     const nuevoTotal = Number(meta.monto_actual) + valor
     const [{ error: e1 }, { error: e2 }, { error: e3 }] = await Promise.all([
@@ -365,9 +366,9 @@ function AbonoSheet({ meta, perfil, onClose, onSave }) {
           <input type="date" value={fecha} onChange={e => setFecha(e.target.value)} className="ds-input" />
         </div>
         <div className="ds-field">
-          <label className="ds-label">Categoría del gasto <span className="ds-label-hint">(opcional)</span></label>
-          <select value={categoriaId} onChange={e => setCategoriaId(e.target.value)} className="ds-input">
-            <option value="">Sin categoría</option>
+          <label className="ds-label">Categoría del gasto</label>
+          <select value={categoriaId} onChange={e => setCategoriaId(e.target.value)} className="ds-input" required>
+            <option value="">Seleccionar categoría…</option>
             {categorias.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
           </select>
         </div>

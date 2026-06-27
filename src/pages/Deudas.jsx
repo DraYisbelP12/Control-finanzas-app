@@ -19,6 +19,7 @@ export default function Deudas() {
   const [formDeuda, setFormDeuda] = useState(emptyDeuda)
   const [formAbono, setFormAbono] = useState(emptyAbono)
   const [saving, setSaving] = useState(false)
+  const [abonoError, setAbonoError] = useState(null)
 
   const isAdmin = perfil?.rol === 'administradora'
 
@@ -58,6 +59,7 @@ export default function Deudas() {
   function openAbono(d) {
     setDeudaParaAbonar(d)
     setFormAbono({ ...emptyAbono, moneda: d.moneda, fecha: new Date().toISOString().split('T')[0] })
+    setAbonoError(null)
     setShowAbonoForm(true)
   }
 
@@ -89,6 +91,11 @@ export default function Deudas() {
 
   async function handleSubmitAbono(e) {
     e.preventDefault()
+    if (!formAbono.categoria_id) {
+      setAbonoError('Selecciona una categoría para el gasto.')
+      return
+    }
+    setAbonoError(null)
     setSaving(true)
     const monto = parseFloat(formAbono.monto)
     const nuevoSaldo = (deudaParaAbonar.saldo_actual || 0) - monto
@@ -261,6 +268,15 @@ export default function Deudas() {
       {showAbonoForm && (
         <SheetModal onClose={() => setShowAbonoForm(false)} title="Registrar abono" subtitle={deudaParaAbonar?.nombre}>
           <form onSubmit={handleSubmitAbono}>
+            {abonoError && (
+              <div role="alert" style={{
+                background: 'var(--color-danger-light)', color: 'var(--color-danger)',
+                borderRadius: 'var(--radius-md)', padding: 'var(--space-3) var(--space-4)',
+                fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)', lineHeight: 1.5,
+              }}>
+                {abonoError}
+              </div>
+            )}
             <div className="ds-field">
               <label htmlFor="abono-fecha" className="ds-label">Fecha</label>
               <input id="abono-fecha" type="date" value={formAbono.fecha}
@@ -301,12 +317,10 @@ export default function Deudas() {
             </div>
 
             <div className="ds-field">
-              <label htmlFor="abono-cat" className="ds-label">
-                Categoría del gasto <span className="ds-label-hint">(opcional)</span>
-              </label>
+              <label htmlFor="abono-cat" className="ds-label">Categoría del gasto</label>
               <select id="abono-cat" value={formAbono.categoria_id}
-                onChange={e => setA('categoria_id', e.target.value)} className="ds-input">
-                <option value="">Sin categoría</option>
+                onChange={e => setA('categoria_id', e.target.value)} className="ds-input" required>
+                <option value="">Seleccionar categoría…</option>
                 {categorias.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
               </select>
             </div>
