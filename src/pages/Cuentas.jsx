@@ -32,7 +32,8 @@ export default function Cuentas() {
 
   async function fetchCuentas() {
     setLoading(true)
-    const { data } = await supabase.from('cuentas').select('*').order('producto')
+    const { data, error } = await supabase.from('cuentas').select('*').order('producto')
+    if (error) console.error('Cuentas fetch error:', error)
     setCuentas(data || [])
     setLoading(false)
   }
@@ -48,6 +49,9 @@ export default function Cuentas() {
     e.preventDefault()
     if (!form.banco.trim()) return
     setSaving(true)
+    // Diagnóstico: verificar rol antes de insertar
+    const { data: rolData } = await supabase.rpc('mi_rol')
+    console.log('mi_rol() result:', rolData)
     const payload = { banco: form.banco.trim(), producto: form.producto }
     let error
     if (editItem) {
@@ -56,7 +60,7 @@ export default function Cuentas() {
       ({ error } = await supabase.from('cuentas').insert({ ...payload, activo: true }))
     }
     setSaving(false)
-    if (error) { alert('Error al guardar: ' + error.message); return }
+    if (error) { console.error('Cuentas insert error:', error); alert('Error al guardar: ' + (error.message || error.details || JSON.stringify(error))); return }
     closeForm()
     await fetchCuentas()
   }
