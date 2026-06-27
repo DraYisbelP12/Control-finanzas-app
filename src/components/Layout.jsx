@@ -21,29 +21,34 @@ export default function Layout({ children }) {
       <header role="banner" style={{
         position: 'fixed', top: 0, left: 0, right: 0,
         height: 'var(--topbar-h)',
-        background: 'var(--color-primary)',
+        background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 var(--space-5)', zIndex: 100,
-        boxShadow: '0 1px 4px rgb(0 0 0 / 0.15)',
+        boxShadow: '0 1px 0 rgba(255,255,255,0.08), 0 2px 10px rgba(0,0,0,0.14)',
       }}>
-        <span style={{ color: 'var(--color-text-inverse)', fontWeight: 700, fontSize: 'var(--text-base)', letterSpacing: '-0.01em' }}>
+        <span style={{
+          color: '#fff', fontWeight: 800,
+          fontSize: 'var(--text-base)', letterSpacing: '-0.02em',
+        }}>
           Finanzas
         </span>
         <button
           onClick={() => setMenuOpen(true)}
-          aria-label="Abrir menú"
+          aria-label="Abrir menu"
           aria-expanded={menuOpen}
           aria-controls="side-menu"
           style={{
-            background: 'none', border: 'none',
-            color: 'var(--color-text-inverse)',
-            padding: 'var(--space-2)',
-            borderRadius: 'var(--radius-sm)',
+            background: 'rgba(255,255,255,0.14)',
+            border: '1px solid rgba(255,255,255,0.22)',
+            color: '#fff',
+            borderRadius: 'var(--radius-md)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer',
+            width: '36px', height: '36px',
+            transition: 'background var(--transition)',
           }}
         >
-          <IconMenu size={22} />
+          <IconMenu size={20} />
         </button>
       </header>
 
@@ -58,7 +63,7 @@ export default function Layout({ children }) {
       {/* Bottom nav */}
       <nav
         role="navigation"
-        aria-label="Navegación principal"
+        aria-label="Navegacion principal"
         style={{
           position: 'fixed', bottom: 0, left: 0, right: 0,
           height: 'var(--bottomnav-h)',
@@ -73,19 +78,38 @@ export default function Layout({ children }) {
             key={to}
             to={to}
             aria-label={label}
-            style={({ isActive }) => ({
+            style={{
               flex: 1,
               display: 'flex', flexDirection: 'column',
-              alignItems: 'center', justifyContent: 'center', gap: '3px',
+              alignItems: 'center', justifyContent: 'center',
               textDecoration: 'none',
-              fontSize: 'var(--text-xs)', fontWeight: 500,
-              color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
-              borderTop: isActive ? '2px solid var(--color-primary)' : '2px solid transparent',
-              transition: 'color var(--transition)',
-            })}
+              paddingTop: '6px', paddingBottom: '4px',
+              gap: '2px',
+            }}
           >
-            <Icon size={20} />
-            <span>{label}</span>
+            {({ isActive }) => (
+              <>
+                <span style={{
+                  width: '52px', height: '28px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  borderRadius: 'var(--radius-full)',
+                  background: isActive ? 'var(--color-primary-light)' : 'transparent',
+                  color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                  transition: 'background var(--transition), color var(--transition)',
+                }}>
+                  <Icon size={20} />
+                </span>
+                <span style={{
+                  fontSize: '10px',
+                  fontWeight: isActive ? 600 : 400,
+                  color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                  letterSpacing: '0.01em',
+                  transition: 'color var(--transition)',
+                }}>
+                  {label}
+                </span>
+              </>
+            )}
           </NavLink>
         ))}
       </nav>

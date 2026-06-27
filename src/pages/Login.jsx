@@ -46,51 +46,97 @@ export default function Login() {
 
   return (
     <div style={{
-      display: 'flex', flexDirection: 'column',
-      justifyContent: 'center', alignItems: 'center',
-      minHeight: '100vh', padding: 'var(--space-4)',
-      background: 'var(--color-bg)',
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100dvh',
+      background: 'linear-gradient(160deg, #1d4ed8 0%, #2563eb 60%, #3b7af5 100%)',
     }}>
-      {/* Brand */}
-      <div style={{ marginBottom: 'var(--space-8)', textAlign: 'center' }}>
+      {/* Brand section */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 'clamp(52px, 13vh, 88px) var(--space-6) clamp(36px, 9vh, 60px)',
+        flex: '0 0 auto',
+      }}>
         <div style={{
-          width: 52, height: 52, borderRadius: 'var(--radius-lg)',
-          background: 'var(--color-primary)',
+          width: 72, height: 72,
+          borderRadius: '22px',
+          background: 'rgba(255,255,255,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.3)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto var(--space-3)',
-          boxShadow: 'var(--shadow-md)',
           color: '#fff',
+          marginBottom: 'var(--space-5)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.2)',
         }}>
-          <IconWallet size={26} />
+          <IconWallet size={36} />
         </div>
-        <h1 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, color: 'var(--color-text-primary)' }}>
-          Control de Finanzas
+        <h1 style={{
+          fontSize: 'clamp(1.6rem, 6vw, 2.1rem)',
+          fontWeight: 800,
+          color: '#fff',
+          letterSpacing: '-0.03em',
+          marginBottom: '6px',
+          lineHeight: 1.1,
+        }}>
+          Finanzas
         </h1>
-        {mode === 'recovery' && (
-          <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', marginTop: 'var(--space-1)' }}>
-            Recupera tu contraseña
-          </p>
-        )}
+        <p style={{
+          fontSize: 'var(--text-sm)',
+          color: 'rgba(255,255,255,0.62)',
+          fontWeight: 400,
+          letterSpacing: '0.01em',
+        }}>
+          Control personal
+        </p>
       </div>
 
-      {/* Card */}
-      <div className="ds-card" style={{ width: '100%', maxWidth: '360px', padding: 'var(--space-8) var(--space-6)' }}>
+      {/* Form section */}
+      <div style={{
+        flex: 1,
+        background: 'var(--color-surface)',
+        borderRadius: '28px 28px 0 0',
+        padding: 'var(--space-8) var(--space-6) var(--space-10)',
+        boxShadow: '0 -8px 40px rgba(0,0,0,0.14)',
+        minHeight: '56vh',
+      }}>
+        <h2 style={{
+          fontSize: 'var(--text-xl)',
+          fontWeight: 700,
+          color: 'var(--color-text-primary)',
+          letterSpacing: '-0.02em',
+          marginBottom: 'var(--space-6)',
+        }}>
+          {mode === 'login' ? 'Iniciar sesión' : 'Recuperar contraseña'}
+        </h2>
+
         {error && (
           <div role="alert" style={{
-            background: 'var(--color-danger-light)', color: 'var(--color-danger)',
-            border: '1px solid #fecaca', borderRadius: 'var(--radius-md)',
+            background: 'var(--color-danger-light)',
+            color: 'var(--color-danger)',
+            border: '1px solid #fecaca',
+            borderRadius: 'var(--radius-md)',
             padding: 'var(--space-3) var(--space-4)',
-            fontSize: 'var(--text-sm)', marginBottom: 'var(--space-5)',
+            fontSize: 'var(--text-sm)',
+            marginBottom: 'var(--space-5)',
+            lineHeight: 1.5,
           }}>
             {error}
           </div>
         )}
         {message && (
           <div role="status" style={{
-            background: 'var(--color-success-light)', color: 'var(--color-success)',
-            border: '1px solid #bbf7d0', borderRadius: 'var(--radius-md)',
+            background: 'var(--color-success-light)',
+            color: 'var(--color-success)',
+            border: '1px solid #bbf7d0',
+            borderRadius: 'var(--radius-md)',
             padding: 'var(--space-3) var(--space-4)',
-            fontSize: 'var(--text-sm)', marginBottom: 'var(--space-5)',
+            fontSize: 'var(--text-sm)',
+            marginBottom: 'var(--space-5)',
+            lineHeight: 1.5,
           }}>
             {message}
           </div>
@@ -98,7 +144,7 @@ export default function Login() {
 
         <form onSubmit={mode === 'login' ? handleLogin : handleRecovery}>
           <div className="ds-field">
-            <label htmlFor="email" className="ds-label">Correo electrónico</label>
+            <label htmlFor="email" className="ds-label">Correo electronico</label>
             <input
               id="email"
               type="email"
@@ -113,7 +159,7 @@ export default function Login() {
 
           {mode === 'login' && (
             <div className="ds-field">
-              <label htmlFor="password" className="ds-label">Contraseña</label>
+              <label htmlFor="password" className="ds-label">Contrasena</label>
               <div style={{ position: 'relative' }}>
                 <input
                   id="password"
@@ -129,7 +175,7 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPwd(v => !v)}
-                  aria-label={showPwd ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  aria-label={showPwd ? 'Ocultar contrasena' : 'Mostrar contrasena'}
                   style={{
                     position: 'absolute', right: '0', top: '0',
                     width: '44px', height: '44px',
@@ -148,13 +194,20 @@ export default function Login() {
             type="submit"
             disabled={loading}
             className="ds-btn ds-btn-primary"
-            style={{ width: '100%', marginBottom: 'var(--space-4)' }}
+            style={{
+              width: '100%',
+              marginTop: 'var(--space-2)',
+              marginBottom: 'var(--space-5)',
+              minHeight: '48px',
+              fontSize: 'var(--text-base)',
+              borderRadius: 'var(--radius-lg)',
+            }}
           >
             {loading
               ? 'Procesando...'
               : mode === 'login'
                 ? 'Entrar'
-                : 'Enviar correo de recuperación'}
+                : 'Enviar correo de recuperacion'}
           </button>
         </form>
 
@@ -165,11 +218,11 @@ export default function Login() {
             style={{
               background: 'none', border: 'none',
               color: 'var(--color-primary)', cursor: 'pointer',
-              fontSize: 'var(--text-sm)', textDecoration: 'underline',
-              display: 'block', margin: '0 auto',
+              fontSize: 'var(--text-sm)', fontWeight: 500,
+              display: 'block', margin: '0 auto', padding: 'var(--space-2)',
             }}
           >
-            Olvidé mi contraseña
+            Olvide mi contrasena
           </button>
         ) : (
           <button
@@ -177,12 +230,12 @@ export default function Login() {
             onClick={() => { setMode('login'); setError(null); setMessage(null) }}
             style={{
               background: 'none', border: 'none',
-              color: 'var(--color-primary)', cursor: 'pointer',
-              fontSize: 'var(--text-sm)', textDecoration: 'underline',
-              display: 'block', margin: '0 auto',
+              color: 'var(--color-text-muted)', cursor: 'pointer',
+              fontSize: 'var(--text-sm)', fontWeight: 500,
+              display: 'block', margin: '0 auto', padding: 'var(--space-2)',
             }}
           >
-            ← Volver al inicio de sesión
+            Volver al inicio de sesion
           </button>
         )}
       </div>
