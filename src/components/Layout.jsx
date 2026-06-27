@@ -19,7 +19,18 @@ export default function Layout({ children }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--color-bg)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--color-bg)', isolation: 'isolate' }}>
+      {/* Portrait watermark — visible en el fondo blanco (multiply) o negro (screen) */}
+      <div aria-hidden="true" style={{
+        position: 'fixed', inset: 0, zIndex: 1,
+        backgroundImage: `url(${import.meta.env.BASE_URL}img/yisbel-portrait.png)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.12,
+        mixBlendMode: dark ? 'screen' : 'multiply',
+        pointerEvents: 'none',
+      }} />
+
       {/* Top bar */}
       <header role="banner" style={{
         position: 'fixed', top: 0, left: 0, right: 0,
@@ -57,6 +68,8 @@ export default function Layout({ children }) {
 
       <main style={{
         flex: 1,
+        position: 'relative',
+        zIndex: 2,
         paddingTop: 'var(--topbar-h)',
         paddingBottom: 'var(--bottomnav-h)',
       }}>
