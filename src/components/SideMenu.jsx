@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { IconTag, IconBank, IconMoon, IconSun, IconGoal } from './icons/NavIcons'
+import { IconTag, IconBank, IconMoon, IconSun, IconGoal, IconGauge } from './icons/NavIcons'
 
 export default function SideMenu({ id, perfil, onClose, dark, onToggleDark }) {
   const navigate = useNavigate()
@@ -93,8 +93,9 @@ export default function SideMenu({ id, perfil, onClose, dark, onToggleDark }) {
               <p className="ds-section-label" style={{ padding: 'var(--space-3) var(--space-5) var(--space-1)' }}>
                 Configuración
               </p>
-              <MenuItem icon={<IconTag size={18} />} label="Categorías" onClick={() => go('/config/categorias')} />
-              <MenuItem icon={<IconBank size={18} />} label="Cuentas"    onClick={() => go('/cuentas')} />
+              <MenuItem icon={<IconTag size={18} />}   label="Categorías"  onClick={() => go('/config/categorias')} />
+              <MenuItem icon={<IconBank size={18} />}  label="Cuentas"     onClick={() => go('/cuentas')} />
+              <MenuItem icon={<IconGauge size={18} />} label="Presupuesto" onClick={() => go('/config/presupuesto')} />
             </>
           )}
 

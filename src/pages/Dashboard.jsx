@@ -231,6 +231,9 @@ export default function Dashboard() {
               </div>
             )}
 
+            {/* Presupuesto del mes */}
+            <BudgetWidget navigate={navigate} />
+
             {/* Metas de ahorro */}
             {metas.length > 0 && (
               <div className="ds-card" style={{ padding: 'var(--space-4)', marginBottom: 'var(--space-4)' }}>
@@ -315,6 +318,73 @@ export default function Dashboard() {
           </>
         )}
       </div>
+    </div>
+  )
+}
+
+function BudgetWidget({ navigate }) {
+  const [items, setItems] = useState(null) // null=loading, []=inactive or no budgets
+
+  useEffect(() => {
+    supabase.from('configuracion').select('valor').eq('clave', 'presupuesto_activo').maybeSingle()
+      .then(({ data: cfg }) => {
+        if (cfg?.valor !== 'true') { setItems([]); return }
+        const now = new Date()
+        const desde = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`
+        const hasta = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0]
+        Promise.all([
+          supabase.from('presupuestos').select('*, categorias(nombre)'),
+          supabase.from('movimientos').select('categoria_id, monto, moneda')
+            .eq('tipo', 'gasto').is('deleted_at', null).gte('fecha', desde).lte('fecha', hasta),
+        ]).then(([{ data: presp }, { data: movs }]) => {
+          if (!presp?.length) { setItems([]); return }
+          const gastos = {}
+          ;(movs || []).forEach(m => {
+            const k = `${m.categoria_id}:${m.moneda}`
+            gastos[k] = (gastos[k] || 0) + Number(m.monto)
+          })
+          const list = presp.map(p => ({
+            ...p, gastado: gastos[`${p.categoria_id}:${p.moneda}`] || 0,
+          })).sort((a, b) => (b.gastado / Number(b.monto_limite)) - (a.gastado / Number(a.monto_limite)))
+          setItems(list.slice(0, 4))
+        })
+      })
+  }, [])
+
+  if (!items || items.length === 0) return null
+
+  return (
+    <div className="ds-card" style={{ padding: 'var(--space-4)', marginBottom: 'var(--space-4)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
+        <p className="ds-section-label" style={{ margin: 0 }}>Presupuesto del mes</p>
+        <button onClick={() => navigate('/config/presupuesto')}
+          style={{ background: 'none', border: 'none', color: 'var(--color-primary)', fontSize: 'var(--text-xs)', fontWeight: 600, cursor: 'pointer', padding: 0 }}>
+          Ver todo →
+        </button>
+      </div>
+      {items.map(p => {
+        const pct = Math.min(100, Math.round((p.gastado / Number(p.monto_limite)) * 100))
+        const excedido = p.gastado > Number(p.monto_limite)
+        return (
+          <div key={p.id} style={{ marginBottom: 'var(--space-3)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-1)' }}>
+              <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-text-primary)' }}>
+                {p.categorias?.nombre}
+              </span>
+              <span style={{ fontSize: 'var(--text-xs)', fontVariantNumeric: 'tabular-nums',
+                color: excedido ? 'var(--color-danger)' : pct >= 80 ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>
+                {pct}%
+              </span>
+            </div>
+            <div className="ds-progress-track">
+              <div className="ds-progress-fill" style={{
+                width: `${pct}%`,
+                background: excedido ? 'var(--color-danger)' : pct >= 80 ? 'var(--color-warning)' : 'var(--color-primary)',
+              }} />
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }

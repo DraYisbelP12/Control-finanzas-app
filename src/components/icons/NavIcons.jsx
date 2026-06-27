@@ -1,7 +1,7 @@
 import {
   Wallet, CreditCard, Landmark, ClipboardList, BarChart3,
   Menu, Calendar, Banknote, RefreshCw, X, Plus, Eye, EyeOff,
-  Tag, Home, Moon, Sun, LayoutDashboard, Target, Download,
+  Tag, Home, Moon, Sun, LayoutDashboard, Target, Download, Gauge,
 } from 'lucide-react'
 
 const SW = 1.75
@@ -27,3 +27,4 @@ export function IconSun({ size = 20 })         { return <Sun             size={s
 export function IconDashboard({ size = 22 })   { return <LayoutDashboard size={size} strokeWidth={SW} aria-hidden="true" /> }
 export function IconGoal({ size = 22 })        { return <Target          size={size} strokeWidth={SW} aria-hidden="true" /> }
 export function IconDownload({ size = 22 })    { return <Download        size={size} strokeWidth={SW} aria-hidden="true" /> }
+export function IconGauge({ size = 22 })       { return <Gauge           size={size} strokeWidth={SW} aria-hidden="true" /> }

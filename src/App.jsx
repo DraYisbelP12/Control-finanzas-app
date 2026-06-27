@@ -11,6 +11,7 @@ import Deudas from './pages/Deudas'
 import Resumen from './pages/Resumen'
 import Metas from './pages/Metas'
 import ConfigCategorias from './pages/config/Categorias'
+import ConfigPresupuesto from './pages/config/Presupuesto'
 
 // Detectar flujo de invitación o recuperación antes de cualquier render
 function detectAuthFlow() {
@@ -56,6 +57,7 @@ export default function App() {
         <Route path="/resumen" element={<Resumen />} />
         <Route path="/metas" element={<Metas />} />
         <Route path="/config/categorias" element={<ConfigCategorias />} />
+        <Route path="/config/presupuesto" element={<ConfigPresupuesto />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Layout>
