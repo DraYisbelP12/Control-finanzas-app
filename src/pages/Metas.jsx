@@ -307,8 +307,15 @@ function AbonoSheet({ meta, perfil, onClose, onSave }) {
   const [monto, setMonto] = useState('')
   const [nota, setNota] = useState('')
   const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0])
+  const [categoriaId, setCategoriaId] = useState('')
+  const [categorias, setCategorias] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  useEffect(() => {
+    supabase.from('categorias').select('id,nombre').eq('tipo', 'gasto').eq('activo', true).order('nombre')
+      .then(({ data }) => setCategorias(data || []))
+  }, [])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -317,14 +324,24 @@ function AbonoSheet({ meta, perfil, onClose, onSave }) {
     if (!valor || valor <= 0) { setError('Ingresa un monto válido.'); return }
     setLoading(true)
     const nuevoTotal = Number(meta.monto_actual) + valor
-    const [{ error: e1 }, { error: e2 }] = await Promise.all([
+    const [{ error: e1 }, { error: e2 }, { error: e3 }] = await Promise.all([
       supabase.from('abonos_meta').insert({
         meta_id: meta.id, monto: valor, fecha, nota: nota.trim() || null, created_by: perfil?.id,
       }),
       supabase.from('metas_ahorro').update({ monto_actual: nuevoTotal }).eq('id', meta.id),
+      supabase.from('movimientos').insert({
+        tipo: 'gasto',
+        monto: valor,
+        moneda: meta.moneda,
+        fecha,
+        concepto: `Meta · ${meta.nombre}`,
+        categoria_id: categoriaId || null,
+        created_by: perfil?.id,
+        recurrente: false,
+      }),
     ])
     setLoading(false)
-    if (e1 || e2) setError((e1 || e2).message)
+    if (e1 || e2 || e3) setError((e1 || e2 || e3).message)
     else onSave()
   }
 
@@ -348,10 +365,20 @@ function AbonoSheet({ meta, perfil, onClose, onSave }) {
           <input type="date" value={fecha} onChange={e => setFecha(e.target.value)} className="ds-input" />
         </div>
         <div className="ds-field">
+          <label className="ds-label">Categoría del gasto <span className="ds-label-hint">(opcional)</span></label>
+          <select value={categoriaId} onChange={e => setCategoriaId(e.target.value)} className="ds-input">
+            <option value="">Sin categoría</option>
+            {categorias.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+          </select>
+        </div>
+        <div className="ds-field">
           <label className="ds-label">Nota <span className="ds-label-hint">(opcional)</span></label>
           <input value={nota} onChange={e => setNota(e.target.value)}
             placeholder="Ej: Sueldo de junio" className="ds-input" />
         </div>
+        <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-3)', lineHeight: 1.5 }}>
+          Se registrará automáticamente un gasto en Movimientos.
+        </p>
         <SheetBotones onClose={onClose} loading={loading} label="Registrar abono" />
       </form>
     </SheetModal>

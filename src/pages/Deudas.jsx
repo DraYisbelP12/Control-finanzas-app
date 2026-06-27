@@ -4,12 +4,13 @@ import { usePerfil } from '../hooks/usePerfil'
 import { IconList, IconPlus } from '../components/icons/NavIcons'
 
 const emptyDeuda = { nombre: '', moneda: 'DOP', saldo_actual: '', limite_o_monto_original: '', tasa_interes: '' }
-const emptyAbono = { monto: '', moneda: 'DOP', fecha: new Date().toISOString().split('T')[0], cuenta_origen_id: '' }
+const emptyAbono = { monto: '', moneda: 'DOP', fecha: new Date().toISOString().split('T')[0], cuenta_origen_id: '', categoria_id: '' }
 
 export default function Deudas() {
   const perfil = usePerfil()
   const [deudas, setDeudas] = useState([])
   const [cuentas, setCuentas] = useState([])
+  const [categorias, setCategorias] = useState([])
   const [loading, setLoading] = useState(true)
   const [showDeudaForm, setShowDeudaForm] = useState(false)
   const [showAbonoForm, setShowAbonoForm] = useState(false)
@@ -35,7 +36,12 @@ export default function Deudas() {
     setCuentas(data || [])
   }
 
-  useEffect(() => { fetchDeudas(); fetchCuentas() }, [])
+  async function fetchCategorias() {
+    const { data } = await supabase.from('categorias').select('id,nombre').eq('tipo', 'gasto').eq('activo', true).order('nombre')
+    setCategorias(data || [])
+  }
+
+  useEffect(() => { fetchDeudas(); fetchCuentas(); fetchCategorias() }, [])
 
   function openNuevaDeuda() { setEditDeuda(null); setFormDeuda(emptyDeuda); setShowDeudaForm(true) }
   function openEditDeuda(d) {
@@ -84,20 +90,33 @@ export default function Deudas() {
   async function handleSubmitAbono(e) {
     e.preventDefault()
     setSaving(true)
-    const payload = {
-      deuda_id: deudaParaAbonar.id,
-      monto: parseFloat(formAbono.monto),
-      moneda: formAbono.moneda,
-      fecha: formAbono.fecha,
-      cuenta_origen_id: formAbono.cuenta_origen_id || null,
-      created_by: perfil?.id,
-    }
-    await supabase.from('abonos_deuda').insert(payload)
-    const nuevoSaldo = (deudaParaAbonar.saldo_actual || 0) - parseFloat(formAbono.monto)
-    await supabase.from('deudas').update({
-      saldo_actual: nuevoSaldo,
-      fecha_ultima_actualizacion: formAbono.fecha,
-    }).eq('id', deudaParaAbonar.id)
+    const monto = parseFloat(formAbono.monto)
+    const nuevoSaldo = (deudaParaAbonar.saldo_actual || 0) - monto
+    await Promise.all([
+      supabase.from('abonos_deuda').insert({
+        deuda_id: deudaParaAbonar.id,
+        monto,
+        moneda: formAbono.moneda,
+        fecha: formAbono.fecha,
+        cuenta_origen_id: formAbono.cuenta_origen_id || null,
+        created_by: perfil?.id,
+      }),
+      supabase.from('deudas').update({
+        saldo_actual: nuevoSaldo,
+        fecha_ultima_actualizacion: formAbono.fecha,
+      }).eq('id', deudaParaAbonar.id),
+      supabase.from('movimientos').insert({
+        tipo: 'gasto',
+        monto,
+        moneda: formAbono.moneda,
+        fecha: formAbono.fecha,
+        concepto: `Abono · ${deudaParaAbonar.nombre}`,
+        categoria_id: formAbono.categoria_id || null,
+        cuenta_id: formAbono.cuenta_origen_id || null,
+        created_by: perfil?.id,
+        recurrente: false,
+      }),
+    ])
     setSaving(false)
     setShowAbonoForm(false)
     await fetchDeudas()
@@ -280,6 +299,21 @@ export default function Deudas() {
                 ))}
               </select>
             </div>
+
+            <div className="ds-field">
+              <label htmlFor="abono-cat" className="ds-label">
+                Categoría del gasto <span className="ds-label-hint">(opcional)</span>
+              </label>
+              <select id="abono-cat" value={formAbono.categoria_id}
+                onChange={e => setA('categoria_id', e.target.value)} className="ds-input">
+                <option value="">Sin categoría</option>
+                {categorias.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+              </select>
+            </div>
+
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-3)', lineHeight: 1.5 }}>
+              Se registrará automáticamente un gasto en Movimientos.
+            </p>
 
             <SheetBotones onCancel={() => setShowAbonoForm(false)} saving={saving} label="Registrar abono" />
           </form>
