@@ -46,7 +46,7 @@ export default function SideMenu({ perfil, onClose }) {
                 Configuración
               </p>
               <MenuItem icon="🏷️" label="Categorías" onClick={() => go('/config/categorias')} />
-              <MenuItem icon="🏦" label="Cuentas" onClick={() => go('/config/cuentas')} />
+              <MenuItem icon="🏦" label="Cuentas" onClick={() => go('/cuentas')} />
             </>
           )}
         </div>
