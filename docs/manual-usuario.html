@@ -676,10 +676,39 @@
 
   /* ── PRINT ── */
   @media print {
-    .cover { min-height: 100vh; }
-    .section { page-break-inside: avoid; }
-    .install-grid { page-break-inside: avoid; }
-    .two-col { page-break-inside: avoid; }
+    /* Portada ocupa página completa */
+    .cover { min-height: 100vh; page-break-after: always; break-after: page; }
+
+    /* Cada módulo empieza en página nueva */
+    .section {
+      break-before: page;
+      page-break-before: always;
+      padding-top: 36px;   /* margen interno al iniciar página */
+    }
+
+    /* Ocultar divisores — ya no hacen falta con saltos explícitos */
+    hr.divider { display: none; }
+
+    /* Encabezados nunca quedan solos al pie */
+    .section-number, .section h2, .section .desc { break-after: avoid; page-break-after: avoid; }
+
+    /* Bloques pequeños: no cortar a la mitad */
+    .phone-wrap         { break-inside: avoid; page-break-inside: avoid; }
+    .callout            { break-inside: avoid; page-break-inside: avoid; }
+    table               { break-inside: avoid; page-break-inside: avoid; }
+    .steps li           { break-inside: avoid; page-break-inside: avoid; }
+    .mini-card          { break-inside: avoid; page-break-inside: avoid; }
+    .faq-item           { break-inside: avoid; page-break-inside: avoid; }
+    .install-box        { break-inside: avoid; page-break-inside: avoid; }
+    .budget-item        { break-inside: avoid; page-break-inside: avoid; }
+
+    /* Grids de instalación y FAQ: intentar mantener juntos */
+    .install-grid       { break-inside: avoid; page-break-inside: avoid; }
+    .faq-grid           { break-inside: avoid; page-break-inside: avoid; }
+
+    /* two-col: NO forzar avoid — algunos superan 1 página y causan saltos
+       en blanco. Solo proteger phone-wrap individualmente (ya declarado). */
+    .two-col            { break-inside: auto; }
   }
 
   @page {
