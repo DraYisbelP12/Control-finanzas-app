@@ -38,7 +38,7 @@ export default function Cuentas() {
       .from('cuentas')
       .select('*')
       .order('moneda')
-      .order('tipo')
+      .order('producto')
     setCuentas(data || [])
     setLoading(false)
   }
@@ -66,12 +66,7 @@ export default function Cuentas() {
     if (!form.banco.trim()) return
     setSaving(true)
 
-    const tipo = form.producto === 'Efectivo' ? 'efectivo' : 'bancaria'
-    const nombre = form.producto === 'Efectivo'
-      ? `Efectivo ${form.moneda}`
-      : `${form.banco} ${form.moneda}`
-
-    const payload = { banco: form.banco.trim(), producto: form.producto, moneda: form.moneda, tipo, nombre }
+    const payload = { banco: form.banco.trim(), producto: form.producto, moneda: form.moneda }
 
     if (editItem) {
       await supabase.from('cuentas').update(payload).eq('id', editItem.id)
@@ -90,7 +85,7 @@ export default function Cuentas() {
   }
 
   async function handleDelete(c) {
-    if (!confirm(`¿Eliminar "${c.nombre}"?`)) return
+    if (!confirm(`¿Eliminar "${c.banco} · ${c.producto}"?`)) return
     await supabase.from('cuentas').delete().eq('id', c.id)
     await fetchCuentas()
   }
