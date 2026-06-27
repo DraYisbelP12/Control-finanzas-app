@@ -29,7 +29,7 @@ export default function MovimientoForm({ item, perfil, onSave, onClose }) {
 
   useEffect(() => {
     supabase.from('categorias').select('id,nombre,tipo').eq('activo', true).then(({ data }) => setCategorias(data || []))
-    supabase.from('cuentas').select('id,nombre,moneda').eq('activo', true).then(({ data }) => setCuentas(data || []))
+    supabase.from('cuentas').select('id,nombre,banco,producto,moneda').eq('activo', true).then(({ data }) => setCuentas(data || []))
   }, [])
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
@@ -142,7 +142,7 @@ export default function MovimientoForm({ item, perfil, onSave, onClose }) {
             <label style={labelStyle}>Cuenta</label>
             <select value={form.cuenta_id} onChange={e => set('cuenta_id', e.target.value)} style={inputStyle}>
               <option value="">Sin cuenta específica</option>
-              {cuentas.map(c => <option key={c.id} value={c.id}>{c.nombre} ({c.moneda})</option>)}
+              {cuentas.map(c => <option key={c.id} value={c.id}>{c.banco} · {c.producto}</option>)}
             </select>
           </div>
 
