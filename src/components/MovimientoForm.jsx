@@ -125,32 +125,36 @@ export default function MovimientoForm({ item, perfil, onSave, onClose }) {
 
           {/* Subcategoría */}
           <div style={fieldStyle}>
-            <label style={labelStyle}>Subcategoría</label>
+            <label style={labelStyle}>Subcategoría <span style={{ fontWeight: 400, color: '#9ca3af' }}>(opcional)</span></label>
             <input type="text" value={form.subcategoria} onChange={e => set('subcategoria', e.target.value)}
-              style={inputStyle} placeholder="Opcional" />
+              style={inputStyle} placeholder="Detalle dentro de la categoría · Ej: Laboratorio, Gasolina" />
+            <p style={{ fontSize: '0.72rem', color: '#9ca3af', marginTop: '0.25rem' }}>Úsala para clasificar más fino dentro de la categoría seleccionada.</p>
           </div>
 
           {/* Concepto */}
           <div style={fieldStyle}>
-            <label style={labelStyle}>Concepto</label>
+            <label style={labelStyle}>Concepto <span style={{ fontWeight: 400, color: '#9ca3af' }}>(opcional)</span></label>
             <input type="text" value={form.concepto} onChange={e => set('concepto', e.target.value)}
-              style={inputStyle} placeholder="Descripción del movimiento" />
+              style={inputStyle} placeholder="¿Qué fue? · Ej: Pago nómina enero, Compra medicamentos" />
+            <p style={{ fontSize: '0.72rem', color: '#9ca3af', marginTop: '0.25rem' }}>Descripción breve del movimiento. Aparece como título en la lista.</p>
           </div>
 
           {/* Cuenta */}
           <div style={fieldStyle}>
-            <label style={labelStyle}>Cuenta</label>
+            <label style={labelStyle}>Cuenta <span style={{ fontWeight: 400, color: '#9ca3af' }}>(opcional)</span></label>
             <select value={form.cuenta_id} onChange={e => set('cuenta_id', e.target.value)} style={inputStyle}>
               <option value="">Sin cuenta específica</option>
               {cuentas.map(c => <option key={c.id} value={c.id}>{c.banco} · {c.producto}</option>)}
             </select>
+            <p style={{ fontSize: '0.72rem', color: '#9ca3af', marginTop: '0.25rem' }}>De qué cuenta salió o entró el dinero.</p>
           </div>
 
-          {/* Centro */}
+          {/* Nota */}
           <div style={fieldStyle}>
-            <label style={labelStyle}>Centro</label>
+            <label style={labelStyle}>Nota <span style={{ fontWeight: 400, color: '#9ca3af' }}>(opcional)</span></label>
             <input type="text" value={form.centro} onChange={e => set('centro', e.target.value)}
-              style={inputStyle} placeholder="Ej: Clínica, Casa, Personal" />
+              style={inputStyle} placeholder="Cualquier aclaración adicional" />
+            <p style={{ fontSize: '0.72rem', color: '#9ca3af', marginTop: '0.25rem' }}>Información extra que no encaja en los campos anteriores.</p>
           </div>
 
           {/* Recurrente */}
