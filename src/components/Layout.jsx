@@ -24,8 +24,9 @@ export default function Layout({ children }) {
       <div aria-hidden="true" style={{
         position: 'fixed', inset: 0, zIndex: 1,
         backgroundImage: `url(${import.meta.env.BASE_URL}img/yisbel-portrait.png)`,
-        backgroundSize: 'cover',
+        backgroundSize: 'auto 100%',
         backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         opacity: 0.12,
         mixBlendMode: dark ? 'screen' : 'multiply',
         pointerEvents: 'none',
