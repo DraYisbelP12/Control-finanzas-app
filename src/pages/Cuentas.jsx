@@ -49,12 +49,14 @@ export default function Cuentas() {
     if (!form.banco.trim()) return
     setSaving(true)
     const payload = { banco: form.banco.trim(), producto: form.producto }
+    let error
     if (editItem) {
-      await supabase.from('cuentas').update(payload).eq('id', editItem.id)
+      ({ error } = await supabase.from('cuentas').update(payload).eq('id', editItem.id))
     } else {
-      await supabase.from('cuentas').insert({ ...payload, activo: true })
+      ({ error } = await supabase.from('cuentas').insert({ ...payload, activo: true }))
     }
     setSaving(false)
+    if (error) { alert('Error al guardar: ' + error.message); return }
     closeForm()
     await fetchCuentas()
   }
