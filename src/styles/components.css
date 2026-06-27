@@ -177,7 +177,7 @@
   max-height: 92vh;
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   overflow-y: auto;
-  padding: var(--space-5) var(--space-5) var(--space-10);
+  padding: var(--space-5) var(--space-5) calc(var(--bottomnav-h) + var(--space-8));
 }
 .ds-sheet-handle {
   width: 36px;
