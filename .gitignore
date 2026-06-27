@@ -2,8 +2,11 @@ node_modules
 dist
 .env
 .env.local
-.DS_Store.agents/ 
-.claude/ 
+.DS_Store
+.agents/
+.claude/
 .gstack/
 .gstack-review/
 package-lock.json
+taste-skill/
+skills-lock.json
