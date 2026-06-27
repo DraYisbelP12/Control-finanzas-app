@@ -27,34 +27,58 @@ Build secrets (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) must exist in the 
 
 React 18 + Vite 5 SPA deployed to GitHub Pages under the `Yisbel-Finanzas` org. Supabase handles auth, database, and RLS.
 
-**Routing:** `BrowserRouter` with `basename="/Control-finanzas-app"`. Route `/` redirects to `/movimientos`. A `public/404.html` redirects unknown paths back to `index.html` so client-side navigation survives page refreshes on GitHub Pages. `Dashboard.jsx` exists but is **not** imported or routed in `App.jsx`.
+**Routing:** `BrowserRouter` with `basename="/Control-finanzas-app"`. Route `/` redirects to `/dashboard`. A `public/404.html` redirects unknown paths back to `index.html` so client-side navigation survives page refreshes on GitHub Pages.
 
-**Auth flow:** Supabase invite-only (no open signups). `App.jsx` listens to `onAuthStateChange` and gates all routes behind session check. Unauthenticated users see only `Login`. Password recovery uses `resetPasswordForEmail` with redirect to the GitHub Pages URL.
+Active routes in `App.jsx`:
+- `/dashboard` → `Dashboard.jsx`
+- `/movimientos` → `Movimientos.jsx`
+- `/cuentas` → `Cuentas.jsx`
+- `/deudas` → `Deudas.jsx`
+- `/resumen` → `Resumen.jsx`
+- `/metas` → `Metas.jsx`
+- `/config/categorias` → `config/Categorias.jsx` (admin only)
+- `/config/presupuesto` → `config/Presupuesto.jsx` (admin manages toggle + limits; all users view)
 
-**Layout:** Fixed top bar (`--topbar-h: 52px`, blue) with hamburger → `SideMenu`. Bottom tab nav (`--bottomnav-h: 64px`) with 4 tabs: Movimientos, Cuentas, Deudas, Resumen. Main content receives `paddingTop: var(--topbar-h)` and `paddingBottom: var(--bottomnav-h)` from `Layout.jsx`. The `/config/categorias` route renders inside `<Layout>` but has no bottom tab.
+**Auth flow:** Supabase invite-only (no open signups). `App.jsx` reads `window.location.hash` synchronously via `detectAuthFlow()` before any render. If the hash contains `type=invite` or `type=recovery`, it renders `SetPassword.jsx` instead of the normal app. `SetPassword.jsx` waits for `onAuthStateChange` → SIGNED_IN before showing the password form, then calls `supabase.auth.updateUser({ password })` and clears the hash.
 
-**Roles:** `administradora` | `auxiliar` — stored in `public.perfiles`. The `usePerfil` hook fetches the current user's profile from `perfiles` by `auth.uid()`. Admin-only UI (delete buttons, config menu, FAB on Deudas) checks `perfil?.rol === 'administradora'`.
+**Layout:** Fixed top bar (`--topbar-h: 52px`, blue) with hamburger → `SideMenu`. Bottom tab nav (`--bottomnav-h: 64px`) with 4 tabs: Inicio (Dashboard), Movimientos, Deudas, Resumen. Main content receives `paddingTop: var(--topbar-h)` and `paddingBottom: var(--bottomnav-h)` from `Layout.jsx`. Config routes render inside `<Layout>` but have no bottom tab.
+
+**Roles:** `administradora` | `auxiliar` — stored in `public.perfiles`. The `usePerfil` hook fetches the current user's profile from `perfiles` by `auth.uid()`. Admin-only UI (delete buttons, config menu, FAB on Deudas, toggle en Presupuesto) checks `perfil?.rol === 'administradora'`.
 
 **Data conventions:**
 - Soft-delete in `movimientos`: `deleted_at` / `deleted_by` columns — never hard DELETE
-- Soft-delete in `deudas`: `activo: false` (different pattern — no `deleted_at`)
+- Soft-delete in `deudas` and `metas_ahorro`: `activo: false` (no `deleted_at`)
 - DOP and USD always in separate columns/records, never mixed or consolidated
 - All monetary amounts: `monto` (numeric) + `moneda` ('DOP' | 'USD') as separate fields
 - Dates stored as `YYYY-MM-DD` strings; always append `T12:00:00` when constructing `Date` objects to avoid timezone-shift bugs
 
 **Supabase schema key points:**
-- `categorias.tipo` check constraint: only `'ingreso'` or `'gasto'`
+- `categorias.tipo` check constraint: only `'ingreso'` or `'gasto'`; `activo` bool for soft-deactivation
 - `perfiles.rol` check constraint: only `'administradora'` or `'auxiliar'`
-- `movimientos` FK: `categoria_id → categorias`, `cuenta_id → cuentas`, `created_by → auth.users`
-- `movimientos` also has `subcategoria` (free text), `recurrente` (bool), `concepto` (free text)
+- `movimientos` FK: `categoria_id → categorias`, `cuenta_id → cuentas`, `created_by → auth.users`; also has `subcategoria` (free text), `recurrente` (bool), `concepto` (free text)
 - `deudas` fields: `nombre`, `moneda`, `tipo` (always `'por_pagar'`), `saldo_actual`, `limite_o_monto_original`, `tasa_interes`, `activo`, `fecha_ultima_actualizacion`
-- `abonos_deuda` FK: `deuda_id → deudas`, `cuenta_origen_id → cuentas`, `created_by → auth.users`; inserting an abono also manually updates `deudas.saldo_actual` in the same operation
+- `abonos_deuda` FK: `deuda_id → deudas`, `cuenta_origen_id → cuentas`, `created_by → auth.users`; inserting an abono also manually updates `deudas.saldo_actual` AND inserts a `movimientos` record (tipo `'gasto'`, concepto `"Abono · {nombre deuda}"`) in the same Promise.all
 - `cuentas` fields: `banco` (institution name), `producto` (one of 5 fixed strings: Efectivo, Cuenta corriente, Cuenta de ahorro, Tarjeta de crédito, Tarjeta de débito), `activo`
+- `metas_ahorro` fields: `nombre`, `descripcion`, `monto_objetivo`, `monto_actual`, `moneda`, `fecha_objetivo`, `cuenta_id`, `activo`, `created_by`
+- `abonos_meta` FK: `meta_id → metas_ahorro`, `created_by → auth.users`; inserting an abono also manually updates `metas_ahorro.monto_actual` AND inserts a `movimientos` record (tipo `'gasto'`, concepto `"Meta · {nombre meta}"`) in the same Promise.all
+- `presupuestos`: `categoria_id` (FK → categorias), `monto_limite`, `moneda`; UNIQUE(categoria_id, moneda) — one recurring monthly limit per category/currency
+- `configuracion`: `clave` (PK text), `valor` (text) — key/value store for app-level settings; currently `presupuesto_activo: 'true'|'false'`
 - New auth users trigger `handle_new_user()` which inserts into `perfiles` with role `'auxiliar'`
 
-**Config module:** `src/pages/config/Categorias.jsx` — CRUD for categories, accessible via `☰` menu only to `administradora`. Route: `/config/categorias`.
+**Linked flows (abonos → movimientos):** Both `Deudas.jsx` and `Metas.jsx` create a `movimientos` gasto record automatically when registering an abono. The category selector in the abono form is **required** — the gasto won't be properly tracked in Resumen and Presupuesto otherwise. The three operations (insert abono, update saldo/monto_actual, insert movimiento) run in `Promise.all`.
 
-**Page patterns:** Pages that need a bottom sheet define `SheetModal` and `SheetBotones` as private components at the bottom of the file (see `Deudas.jsx`). There is no shared sheet component — copy the pattern if adding sheets to a new page.
+**Movimientos module:** Loads up to 500 records with `cuentas(banco, producto)` and `categorias(nombre)` joins. Client-side filtering via `useMemo` (search, tipo, moneda, categoría, date range). Export to Excel via `xlsx` (SheetJS) — exports the currently filtered list; button appears in the blue page header when results exist.
+
+**Presupuesto module:** Admin toggles via `useConfig('presupuesto_activo')`. Budget limits are recurring (no `mes` column) — compared each month against the current month's `movimientos` gastos grouped by `categoria_id + moneda`. Dashboard shows a lazy `BudgetWidget` component that fetches independently and renders only when the module is active.
+
+**Config modules:** `src/pages/config/Categorias.jsx` and `src/pages/config/Presupuesto.jsx` — both accessible via `☰` menu, admin only. Smart delete in Categorias: tries hard delete → FK error → auto-deactivates with toast.
+
+**Page patterns:** Pages that need a bottom sheet define `SheetModal` and `SheetBotones` as private components at the bottom of the file (see `Deudas.jsx`, `Metas.jsx`). There is no shared sheet component — copy the pattern if adding sheets to a new page. The `.ds-sheet` CSS already has `padding-bottom: calc(var(--bottomnav-h) + var(--space-8))` so buttons are never hidden behind the bottom nav.
+
+**Hooks:**
+- `usePerfil()` — fetches `perfiles` row for the current auth user
+- `useConfig(clave)` — reads/writes a row in `configuracion`; returns `{ valor, loading, update }`. `update()` does an upsert on conflict.
+- `useDarkMode()` — persists dark mode preference to localStorage
 
 ## Design System
 
@@ -87,8 +111,14 @@ All styles use CSS custom properties defined in `src/styles/design-system.css`. 
 
 ## Icon System
 
-All icons live in `src/components/icons/NavIcons.jsx` as inline SVG components with a `size` prop and `aria-hidden="true"`. Never use emoji as structural UI elements.
+All icons live in `src/components/icons/NavIcons.jsx` as thin wrappers around `lucide-react` components. All export a `size` prop and `aria-hidden="true"`. Global `strokeWidth` is `1.75`.
 
-Available icons: `IconMoney`, `IconBank`, `IconList`, `IconChart`, `IconMenu`, `IconWallet`, `IconCalendar`, `IconCash`, `IconCreditCard`, `IconRepeat`, `IconX`, `IconPlus`, `IconEye`, `IconEyeOff`.
+Available icons: `IconHome`, `IconMoney`, `IconBank`, `IconList`, `IconChart`, `IconMenu`, `IconWallet`, `IconCalendar`, `IconCash`, `IconCreditCard`, `IconRepeat`, `IconX`, `IconPlus`, `IconEye`, `IconEyeOff`, `IconTag`, `IconMoon`, `IconSun`, `IconDashboard`, `IconGoal`, `IconDownload`, `IconGauge`.
 
-When adding a new icon, add it to `NavIcons.jsx` following the same pattern (SVG with `stroke="currentColor"`, `fill="none"`, `aria-hidden="true"`).
+When adding a new icon: import it from `lucide-react` and add a one-line export to `NavIcons.jsx` following the same pattern. One icon family only — do not import from other icon libraries.
+
+## SQL Migrations
+
+New table migrations live in `supabase/`. Run them manually in the Supabase SQL editor:
+- `supabase/metas_ahorro.sql` — creates `metas_ahorro` + `abonos_meta` tables with RLS
+- `supabase/presupuesto.sql` — creates `configuracion` + `presupuestos` tables with RLS
