@@ -4,24 +4,50 @@ import { usePerfil } from '../hooks/usePerfil'
 import { useAnalisisIA } from '../hooks/useAnalisisIA'
 import { IconSparkles, IconX } from './icons/NavIcons'
 
+const now = new Date()
+const CUR_YEAR = now.getFullYear()
+const CUR_MONTH = now.getMonth() + 1
+
 function mesLabel(year, month) {
   return new Date(year, month - 1, 1).toLocaleDateString('es-DO', { month: 'long', year: 'numeric' })
+}
+
+// Últimos 12 meses para el selector
+function ultimos12Meses() {
+  const meses = []
+  for (let i = 0; i < 12; i++) {
+    let m = CUR_MONTH - i
+    let y = CUR_YEAR
+    if (m <= 0) { m += 12; y -= 1 }
+    meses.push({ year: y, month: m, label: mesLabel(y, m) })
+  }
+  return meses
 }
 
 export default function IAFloatingButton() {
   const perfil = usePerfil()
   const [open, setOpen] = useState(false)
+  // 'seleccion' | 'mensual' | 'general'
+  const [modo, setModo] = useState('seleccion')
+  const [mesSelec, setMesSelec] = useState({ year: CUR_YEAR, month: CUR_MONTH })
   const { analisis, loading, error, analizar, limpiar } = useAnalisisIA()
 
   if (perfil?.rol !== 'administradora') return null
 
-  async function handleOpen() {
+  function abrirSheet() {
     setOpen(true)
+    setModo('seleccion')
     limpiar()
-    // Fetch movimientos del mes actual
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = now.getMonth() + 1
+  }
+
+  function cerrarSheet() {
+    setOpen(false)
+    limpiar()
+  }
+
+  async function generarMensual(year, month) {
+    setModo('mensual')
+    limpiar()
     const desde = `${year}-${String(month).padStart(2, '0')}-01`
     const hasta = new Date(year, month, 0).toISOString().split('T')[0]
     const { data } = await supabase
@@ -33,16 +59,25 @@ export default function IAFloatingButton() {
     analizar(data || [], mesLabel(year, month))
   }
 
-  function handleClose() {
-    setOpen(false)
+  async function generarGeneral() {
+    setModo('general')
     limpiar()
+    const { data } = await supabase
+      .from('movimientos')
+      .select('tipo, monto, moneda, fecha, categorias(nombre)')
+      .is('deleted_at', null)
+      .order('fecha', { ascending: false })
+      .limit(500)
+    analizar(data || [], `resumen general (últimos ${data?.length || 0} movimientos)`)
   }
+
+  const meses = ultimos12Meses()
 
   return (
     <>
       {/* FAB */}
       <button
-        onClick={handleOpen}
+        onClick={abrirSheet}
         aria-label="Análisis IA"
         style={{
           position: 'fixed',
@@ -57,7 +92,7 @@ export default function IAFloatingButton() {
           cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 8px 24px rgba(124,58,237,0.40), 0 2px 8px rgba(124,58,237,0.22)',
-          transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
+          transition: 'transform 180ms ease-out',
         }}
         onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
         onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
@@ -67,38 +102,90 @@ export default function IAFloatingButton() {
 
       {/* Sheet */}
       {open && (
-        <div
-          className="ds-sheet-overlay"
-          onClick={handleClose}
-          style={{ zIndex: 200 }}
-        >
+        <div className="ds-sheet-overlay" onClick={cerrarSheet} style={{ zIndex: 200 }}>
           <div
             className="ds-sheet"
             onClick={e => e.stopPropagation()}
             role="dialog"
             aria-label="Análisis financiero con IA"
             aria-modal="true"
-            style={{ maxHeight: '80vh', overflowY: 'auto' }}
+            style={{ maxHeight: '85vh', overflowY: 'auto' }}
           >
             <div className="ds-sheet-handle" />
 
+            {/* Header */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-4)' }}>
               <div>
                 <h2 style={{ marginBottom: 'var(--space-1)' }}>Análisis con IA ✨</h2>
-                <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
-                  {mesLabel(new Date().getFullYear(), new Date().getMonth() + 1)}
-                </p>
+                {modo !== 'seleccion' && !loading && (
+                  <button
+                    onClick={() => { setModo('seleccion'); limpiar() }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-primary)', fontSize: 'var(--text-xs)', padding: 0 }}
+                  >
+                    ← Cambiar tipo
+                  </button>
+                )}
               </div>
-              <button
-                onClick={handleClose}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', padding: 'var(--space-1)' }}
-                aria-label="Cerrar"
-              >
+              <button onClick={cerrarSheet} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)' }} aria-label="Cerrar">
                 <IconX size={20} />
               </button>
             </div>
 
-            {loading && (
+            {/* ── SELECCIÓN ── */}
+            {modo === 'seleccion' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-1)' }}>
+                  ¿Qué deseas analizar?
+                </p>
+
+                {/* Opción: Resumen mensual */}
+                <div style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-4)' }}>
+                  <p style={{ fontWeight: 700, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', color: 'var(--color-text-primary)' }}>
+                    📅 Resumen mensual
+                  </p>
+                  <select
+                    value={`${mesSelec.year}-${mesSelec.month}`}
+                    onChange={e => {
+                      const [y, m] = e.target.value.split('-').map(Number)
+                      setMesSelec({ year: y, month: m })
+                    }}
+                    className="ds-input"
+                    style={{ marginBottom: 'var(--space-3)', textTransform: 'capitalize' }}
+                  >
+                    {meses.map(({ year, month, label }) => (
+                      <option key={`${year}-${month}`} value={`${year}-${month}`}>{label}</option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => generarMensual(mesSelec.year, mesSelec.month)}
+                    className="ds-btn ds-btn-primary"
+                    style={{ width: '100%' }}
+                  >
+                    Analizar {mesLabel(mesSelec.year, mesSelec.month)}
+                  </button>
+                </div>
+
+                {/* Opción: Resumen general */}
+                <div style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-4)' }}>
+                  <p style={{ fontWeight: 700, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-2)', color: 'var(--color-text-primary)' }}>
+                    📊 Resumen general
+                  </p>
+                  <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-3)', lineHeight: 1.5 }}>
+                    Análisis de los últimos 500 movimientos registrados.
+                  </p>
+                  <button
+                    onClick={generarGeneral}
+                    className="ds-btn ds-btn-ghost"
+                    style={{ width: '100%' }}
+                  >
+                    Analizar historial completo
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ── LOADING ── */}
+            {(modo === 'mensual' || modo === 'general') && loading && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
                 <div className="ds-skeleton" style={{ height: 14, borderRadius: 6, width: '92%' }} />
                 <div className="ds-skeleton" style={{ height: 14, borderRadius: 6, width: '78%' }} />
@@ -111,6 +198,7 @@ export default function IAFloatingButton() {
               </div>
             )}
 
+            {/* ── ERROR ── */}
             {error && (
               <div role="alert" style={{
                 background: 'var(--color-danger-light)', color: 'var(--color-danger)',
@@ -119,7 +207,7 @@ export default function IAFloatingButton() {
               }}>
                 {error}
                 <button
-                  onClick={handleOpen}
+                  onClick={() => modo === 'general' ? generarGeneral() : generarMensual(mesSelec.year, mesSelec.month)}
                   style={{ display: 'block', marginTop: 'var(--space-2)', fontSize: 'var(--text-xs)', color: 'var(--color-danger)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
                 >
                   Reintentar
@@ -127,7 +215,8 @@ export default function IAFloatingButton() {
               </div>
             )}
 
-            {analisis && (
+            {/* ── RESULTADO ── */}
+            {analisis && !loading && (
               <>
                 <div style={{
                   fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)',
@@ -137,7 +226,7 @@ export default function IAFloatingButton() {
                   {analisis}
                 </div>
                 <button
-                  onClick={handleOpen}
+                  onClick={() => { setModo('seleccion'); limpiar() }}
                   className="ds-btn ds-btn-ghost"
                   style={{ width: '100%' }}
                 >
