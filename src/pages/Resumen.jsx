@@ -312,13 +312,7 @@ export default function Resumen() {
                   </div>
                 )}
 
-                {/* Análisis con IA — solo admin */}
-                {isAdmin && (
-                  <AnalisisIA
-                    movimientos={movs}
-                    periodo={mesLabel(year, month)}
-                  />
-                )}
+
               </>
             )}
           </>
