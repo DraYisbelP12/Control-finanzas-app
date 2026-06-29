@@ -45,6 +45,8 @@ Active routes in `App.jsx`:
 
 **Roles:** `administradora` | `auxiliar` — stored in `public.perfiles`. The `usePerfil` hook fetches the current user's profile from `perfiles` by `auth.uid()`. Admin-only UI (delete buttons, config menu, FAB on Deudas, toggle en Presupuesto) checks `perfil?.rol === 'administradora'`.
 
+**RLS policies** use direct subqueries — never the `mi_rol()` function (unreliable in RLS context): `EXISTS (SELECT 1 FROM public.perfiles WHERE id = auth.uid() AND rol = 'administradora')`.
+
 **Data conventions:**
 - Soft-delete in `movimientos`: `deleted_at` / `deleted_by` columns — never hard DELETE
 - Soft-delete in `deudas` and `metas_ahorro`: `activo: false` (no `deleted_at`)
@@ -56,9 +58,9 @@ Active routes in `App.jsx`:
 - `categorias.tipo` check constraint: only `'ingreso'` or `'gasto'`; `activo` bool for soft-deactivation
 - `perfiles.rol` check constraint: only `'administradora'` or `'auxiliar'`
 - `movimientos` FK: `categoria_id → categorias`, `cuenta_id → cuentas`, `created_by → auth.users`; also has `subcategoria` (free text), `recurrente` (bool), `concepto` (free text)
-- `deudas` fields: `nombre`, `moneda`, `tipo` (always `'por_pagar'`), `saldo_actual`, `limite_o_monto_original`, `tasa_interes`, `activo`, `fecha_ultima_actualizacion`
+- `deudas` fields: `nombre`, `moneda`, `tipo` (`'prestamo'` | `'tarjeta_credito'` — check constraint, never `'por_pagar'`), `saldo_actual`, `limite_o_monto_original`, `tasa_interes`, `activo`, `fecha_ultima_actualizacion`
 - `abonos_deuda` FK: `deuda_id → deudas`, `cuenta_origen_id → cuentas`, `created_by → auth.users`; inserting an abono also manually updates `deudas.saldo_actual` AND inserts a `movimientos` record (tipo `'gasto'`, concepto `"Abono · {nombre deuda}"`) in the same Promise.all
-- `cuentas` fields: `banco` (institution name), `producto` (one of 5 fixed strings: Efectivo, Cuenta corriente, Cuenta de ahorro, Tarjeta de crédito, Tarjeta de débito), `activo`
+- `cuentas` fields: `banco` (institution name), `producto` (one of 5 fixed strings: Efectivo, Cuenta corriente, Cuenta de ahorro, Tarjeta de crédito, Tarjeta de débito), `moneda` ('DOP' | 'USD', NOT NULL — required in form, default `'DOP'`), `activo`
 - `metas_ahorro` fields: `nombre`, `descripcion`, `monto_objetivo`, `monto_actual`, `moneda`, `fecha_objetivo`, `cuenta_id`, `activo`, `created_by`
 - `abonos_meta` FK: `meta_id → metas_ahorro`, `created_by → auth.users`; inserting an abono also manually updates `metas_ahorro.monto_actual` AND inserts a `movimientos` record (tipo `'gasto'`, concepto `"Meta · {nombre meta}"`) in the same Promise.all
 - `presupuestos`: `categoria_id` (FK → categorias), `monto_limite`, `moneda`; UNIQUE(categoria_id, moneda) — one recurring monthly limit per category/currency
@@ -79,6 +81,12 @@ Active routes in `App.jsx`:
 - `usePerfil()` — fetches `perfiles` row for the current auth user
 - `useConfig(clave)` — reads/writes a row in `configuracion`; returns `{ valor, loading, update }`. `update()` does an upsert on conflict.
 - `useDarkMode()` — persists dark mode preference to localStorage
+- `useAnalisisIA()` — calls Edge Function `analizar-gastos`; returns `{ analisis, loading, error, analizar(movimientos, periodo), limpiar }`
+
+**IA Financiera:** Groq API accessed securely via Supabase Edge Function (never from the frontend directly).
+- `supabase/functions/analizar-gastos/index.ts` — Deno proxy to Groq (`llama-3.1-8b-instant`). Verifies JWT, trims movimientos to `{ fecha, tipo, categoria, monto, moneda }` to reduce tokens, returns `{ analisis }`. Requires `GROQ_API_KEY` Supabase secret.
+- `src/components/IAFloatingButton.jsx` — purple gradient FAB fixed `bottom-left`, admin-only. Three states: `seleccion` (pick monthly or general) → `mensual` / `general` (fetch + analyze). Fetches movimientos directly from Supabase.
+- `src/components/AnalisisIA.jsx` — inline card variant used in `Resumen.jsx`; accepts `{ movimientos, periodo }` props.
 
 ## Design System
 
@@ -113,7 +121,7 @@ All styles use CSS custom properties defined in `src/styles/design-system.css`. 
 
 All icons live in `src/components/icons/NavIcons.jsx` as thin wrappers around `lucide-react` components. All export a `size` prop and `aria-hidden="true"`. Global `strokeWidth` is `1.75`.
 
-Available icons: `IconHome`, `IconMoney`, `IconBank`, `IconList`, `IconChart`, `IconMenu`, `IconWallet`, `IconCalendar`, `IconCash`, `IconCreditCard`, `IconRepeat`, `IconX`, `IconPlus`, `IconEye`, `IconEyeOff`, `IconTag`, `IconMoon`, `IconSun`, `IconDashboard`, `IconGoal`, `IconDownload`, `IconGauge`.
+Available icons: `IconHome`, `IconMoney`, `IconBank`, `IconList`, `IconChart`, `IconMenu`, `IconWallet`, `IconCalendar`, `IconCash`, `IconCreditCard`, `IconRepeat`, `IconX`, `IconPlus`, `IconEye`, `IconEyeOff`, `IconTag`, `IconMoon`, `IconSun`, `IconDashboard`, `IconGoal`, `IconDownload`, `IconGauge`, `IconSparkles`.
 
 When adding a new icon: import it from `lucide-react` and add a one-line export to `NavIcons.jsx` following the same pattern. One icon family only — do not import from other icon libraries.
 
